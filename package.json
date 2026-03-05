@@ -1,0 +1,7 @@
+{
+  "name": "hand-tool-hvat",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx serve static -p 3000"
+  }
+}
