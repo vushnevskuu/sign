@@ -69,8 +69,10 @@ main.page-main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   width: 100%;
-  padding: 0 0 48px;
+  padding: 24px;
+  min-height: 0;
 }
 
 h1 { margin-bottom: 0; }
@@ -385,13 +387,13 @@ body.videoOverlayActive #buttonsRow { display: none; }
   outline: 2px solid var(--focus-blue); outline-offset: 2px;
 }
 
-/* Hero — warm band + display type (DESIGN.md) */
+/* Hero — warm band + display type (DESIGN.md), vertically centered under nav */
 .site-header {
   text-align: center;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 72px 24px 64px;
+  padding: 56px 24px 48px;
   background: var(--warm-white);
   border-bottom: var(--border-whisper);
 }
@@ -444,34 +446,11 @@ body.videoOverlayActive #buttonsRow { display: none; }
 .btn-pricing:hover { background: var(--active-blue); transform: translateY(-1px); }
 .btn-pricing:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
 
-.inline-code {
-  font-size: 0.88em;
-  background: var(--warm-white);
-  padding: 2px 6px;
-  border-radius: 4px;
-  color: var(--warm-dark);
-  border: var(--border-whisper);
-  font-family: ui-monospace, monospace;
-}
-
 .app-section {
   width: 100%;
   max-width: 1200px;
   padding: 48px 24px 24px;
 }
-
-.site-footer {
-  text-align: center;
-  padding: 40px 24px 32px;
-  color: var(--gray-500);
-  font-size: 14px;
-  max-width: 640px;
-  margin: 0 auto;
-  line-height: 1.55;
-  border-top: var(--border-whisper);
-}
-.site-footer strong { color: var(--text); font-weight: 600; }
-.site-footer .foot-pay { margin-top: 12px; font-size: 13px; color: var(--gray-300); }
 
 /* Paywall modal — white card, deep shadow */
 #paywallModal {
@@ -646,10 +625,6 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     </div>
     </div>
   </header>
-  <footer class="site-footer">
-    <p><strong>First signature is free</strong>, then <strong>$1</strong> per extra slot in this browser. <strong>Signing</strong> opens on the next page. Your document stays on your device.</p>
-    <p class="foot-pay">Stripe success URL should point to the signer with <code class="inline-code">?paid=1</code>, for example <code class="inline-code">app.html?paid=1</code>.</p>
-  </footer>
   </main>
 
   <script>
