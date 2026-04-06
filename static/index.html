@@ -80,10 +80,10 @@ main.page-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   width: 100%;
-  padding: 24px;
+  padding: 16px 0 32px;
   min-height: 0;
 }
 
@@ -431,67 +431,89 @@ body.videoOverlayActive #buttonsRow { display: none; }
   outline: 2px solid var(--focus-blue); outline-offset: 2px;
 }
 
-/* Hero — текст слева, демо-видео справа (на узких экранах колонка) */
+/* Hero — полная ширина; ≥768px: текст слева, видео справа; мобилка — всё по центру */
 .site-header {
   text-align: center;
   width: 100%;
   max-width: none;
   margin: 0;
-  padding: 48px 24px 40px;
+  padding: 40px clamp(16px, 4vw, 40px) 48px;
   background: var(--white);
   border-bottom: none;
+  box-sizing: border-box;
 }
 .site-header .site-header__inner {
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: 28px;
   align-items: center;
 }
 .hero-copy {
   min-width: 0;
+  text-align: center;
+  max-width: 38rem;
+  margin: 0 auto;
 }
 .site-header h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-size: clamp(2.25rem, 5.5vw, 3.25rem);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--text);
-  margin-bottom: 20px;
+  margin: 0 0 16px;
+  text-align: inherit;
 }
 .site-header .lede {
   color: var(--body-gray);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  line-height: 1.5;
-  margin: 0 auto 24px;
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
+  line-height: 1.55;
+  margin: 0 auto 20px;
   font-weight: 400;
-  max-width: 560px;
+  max-width: 100%;
   font-family: var(--font-sans);
+  text-align: inherit;
 }
-.badge-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-@media (min-width: 900px) {
+.site-header .hero-copy p.lede {
+  max-width: 100%;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 0 0 4px;
+}
+@media (min-width: 768px) {
   .site-header {
     text-align: left;
   }
   .site-header .site-header__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
-    gap: 40px 48px;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+    gap: 36px 44px;
+    align-items: center;
+  }
+  .hero-copy {
+    text-align: left;
+    max-width: none;
+    margin: 0;
+    justify-self: stretch;
   }
   .site-header .lede {
     margin-left: 0;
     margin-right: 0;
-    max-width: 36rem;
+    max-width: 38rem;
   }
   .badge-row { justify-content: flex-start; }
   .hero-cta-row { justify-content: flex-start; }
   .hero-video-wrap {
     margin: 0;
     max-width: 100%;
-    justify-self: end;
+    width: 100%;
+    justify-self: stretch;
   }
-  .hero-video-caption { text-align: center; }
 }
 .badge {
   font-size: 12px;
@@ -513,8 +535,9 @@ body.videoOverlayActive #buttonsRow { display: none; }
 }
 
 .hero-video-wrap {
-  margin: 8px auto 0;
-  max-width: min(300px, 88vw);
+  margin: 0 auto;
+  max-width: min(280px, 100%);
+  width: 100%;
 }
 .hero-video {
   display: block;
@@ -523,17 +546,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
   border-radius: 12px;
   box-shadow: var(--shadow-deep);
   background: var(--black);
-}
-.hero-video-caption {
-  margin: 10px 0 0;
-  padding: 0 8px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: var(--muted-gray);
-  font-family: var(--font-sans);
-  font-weight: 500;
-  text-align: center;
-  max-width: none;
 }
 
 /* Primary CTA — pill + brand halo */
@@ -664,8 +676,11 @@ body.videoOverlayActive #buttonsRow { display: none; }
 #paywallModal .btn-ghost:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
 
 .hero-cta-row {
-  display: flex; flex-wrap: wrap; gap: 12px; justify-content: center;
-  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 22px;
 }
 a.hero-cta-link { text-decoration: none; display: inline-block; }
 
@@ -750,11 +765,10 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
     </div>
     </div>
-    <figure class="hero-video-wrap">
-      <video class="hero-video" id="heroDemoVideo" autoplay muted loop playsinline controls preload="auto" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser (silent loop)">
+    <figure class="hero-video-wrap" aria-label="Product demo video">
+      <video class="hero-video" id="heroDemoVideo" autoplay muted loop playsinline controls preload="auto" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser (silent, looping)">
         <source src="media/demosign.mp4" type="video/mp4">
       </video>
-      <figcaption class="hero-video-caption">Silent demo · loops automatically</figcaption>
     </figure>
     </div>
   </header>
