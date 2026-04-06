@@ -23,7 +23,7 @@
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <style>
-/* Notion-inspired tokens — from awesome-design-md notion/DESIGN.md + preview.html (light) */
+/* Notion structure & neutrals (DESIGN.md + preview.html). Primary accent = signature blue #0038e9. */
 :root {
   --text: rgba(0, 0, 0, 0.95);
   --white: #ffffff;
@@ -31,11 +31,12 @@
   --warm-dark: #31302e;
   --gray-500: #615d59;
   --gray-300: #a39e98;
-  --notion-blue: #0075de;
-  --active-blue: #005bab;
-  --focus-blue: #097fe8;
-  --badge-bg: #f2f9ff;
-  --badge-text: #097fe8;
+  --signature-blue: #0038e9;
+  --notion-blue: #0038e9;
+  --active-blue: #002db3;
+  --focus-blue: #0047cc;
+  --badge-bg: #e8edff;
+  --badge-text: #0038e9;
   --teal: #2a9d99;
   --green: #1aae39;
   --orange: #dd5b00;
@@ -106,9 +107,10 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   font-weight: 600;
   text-decoration: none;
   border: 1px solid transparent;
-  transition: background 0.15s;
+  box-shadow: 0 4px 14px rgba(0, 56, 233, 0.2);
+  transition: background 0.15s, box-shadow 0.15s;
 }
-.top-nav__cta:hover { background: var(--active-blue); }
+.top-nav__cta:hover { background: var(--active-blue); box-shadow: 0 4px 18px rgba(0, 56, 233, 0.28); }
 
 /* Camera / overlay */
 #holdIndicator {
@@ -231,15 +233,15 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   border: var(--border-whisper);
   box-shadow: none;
 }
-#resignBtn .btnProgress { background: rgba(0, 117, 222, 0.15); }
-#resignBtn.activating .btnProgress { background: rgba(0, 117, 222, 0.28); }
+#resignBtn .btnProgress { background: rgba(0, 56, 233, 0.15); }
+#resignBtn.activating .btnProgress { background: rgba(0, 56, 233, 0.28); }
 #resignBtn.activating { transform: scale(0.98); }
 #resignBtn:hover { background: rgba(0, 0, 0, 0.08); }
 #signConfirmBtn {
   background: var(--notion-blue);
   color: var(--white);
   border: 1px solid transparent;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-card), 0 6px 20px rgba(0, 56, 233, 0.22);
 }
 #signConfirmBtn .btnProgress { background: rgba(255, 255, 255, 0.25); }
 #signConfirmBtn.activating .btnProgress { background: rgba(255, 255, 255, 0.4); }
@@ -302,8 +304,8 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   font-weight: 600;
   font-family: var(--font-sans);
   cursor: pointer;
-  box-shadow: var(--shadow-card);
-  transition: background 0.15s, transform 0.12s;
+  box-shadow: var(--shadow-card), 0 6px 20px rgba(0, 56, 233, 0.22);
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
 }
 #exportBtn:hover, #docSignBtn:hover {
   background: var(--active-blue);
@@ -383,18 +385,26 @@ body.videoOverlayActive #buttonsRow { display: none; }
   outline: 2px solid var(--focus-blue); outline-offset: 2px;
 }
 
-/* Hero */
+/* Hero — warm band + display type (DESIGN.md) */
 .site-header {
   text-align: center;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 72px 24px 64px;
+  background: var(--warm-white);
+  border-bottom: var(--border-whisper);
+}
+.site-header .site-header__inner {
   max-width: 720px;
   margin: 0 auto;
-  padding: 56px 24px 40px;
 }
 .site-header h1 {
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2.25rem, 5.5vw, 3.25rem);
   font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.06em;
+  line-height: 1.06;
+  letter-spacing: -0.055em;
+  font-feature-settings: "lnum" 1;
   color: var(--text);
   margin-bottom: 16px;
 }
@@ -428,8 +438,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
   font-weight: 600;
   font-family: var(--font-sans);
   cursor: pointer;
-  transition: background 0.15s, transform 0.12s;
-  box-shadow: var(--shadow-card);
+  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
+  box-shadow: var(--shadow-card), 0 6px 20px rgba(0, 56, 233, 0.2);
 }
 .btn-pricing:hover { background: var(--active-blue); transform: translateY(-1px); }
 .btn-pricing:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
@@ -623,6 +633,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   </nav>
   <main class="page-main">
   <header class="site-header">
+    <div class="site-header__inner">
     <h1>Sign PDFs in the air with your webcam</h1>
     <p class="lede">Use hand tracking in the browser: draw your signature, confirm with gestures, drag it on the page, and export a PDF. Built for laptops with a camera (for example MacBook).</p>
     <div class="badge-row" role="list">
@@ -632,6 +643,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     <div class="hero-cta-row">
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
       <a class="btn-hero-secondary" id="heroCtaSecondary" href="app.html?unlock=1">Buy a slot — $1</a>
+    </div>
     </div>
   </header>
   <footer class="site-footer">
