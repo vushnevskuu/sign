@@ -485,6 +485,30 @@ body.videoOverlayActive #buttonsRow { display: none; }
   color: var(--brand);
 }
 
+.hero-video-wrap {
+  margin: 28px auto 4px;
+  max-width: min(320px, 88vw);
+}
+.hero-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: var(--shadow-deep);
+  background: var(--black);
+}
+.hero-video-caption {
+  margin: 10px 0 0;
+  padding: 0 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--muted-gray);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  text-align: center;
+  max-width: none;
+}
+
 /* Primary CTA — pill + brand halo */
 .btn-pricing {
   background: var(--brand);
@@ -669,6 +693,12 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       <span class="badge badge--neutral" role="listitem">Webcam required</span>
       <span class="badge badge--brand" role="listitem">Private — camera stays in your browser</span>
     </div>
+    <figure class="hero-video-wrap">
+      <video class="hero-video" controls playsinline preload="metadata" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser">
+        <source src="media/demosign.mp4" type="video/mp4">
+      </video>
+      <figcaption class="hero-video-caption">Demo — in-browser hand tracking (no upload).</figcaption>
+    </figure>
     <div class="hero-cta-row">
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
     </div>

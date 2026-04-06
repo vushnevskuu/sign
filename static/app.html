@@ -90,8 +90,7 @@ main.page-main {
 h1 { margin-bottom: 0; }
 
 p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 560px; }
-.app-tool-head p,
-.site-footer p {
+.app-tool-head p {
   max-width: 42rem;
   margin-left: auto;
   margin-right: auto;
@@ -546,17 +545,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
   line-height: 1.5;
   text-align: left;
 }
-#creditsStatus {
-  margin-top: 14px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.45;
-  text-align: left;
-  color: var(--gray-500);
-}
-#creditsStatus.is-ok { color: var(--green); }
-#creditsStatus.is-warn { color: var(--orange); }
-
 .pricing-actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; }
 .btn-pricing {
   background: var(--brand);
@@ -616,43 +604,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
 .app-tool-intro { font-size: 15px; color: var(--gray-500); line-height: 1.5; margin: 0; font-weight: 400; }
 .app-tool-intro a { color: var(--brand); font-weight: 600; text-decoration: none; }
 .app-tool-intro a:hover { text-decoration: underline; }
-.app-credits {
-  margin: 0 auto 24px;
-  max-width: 40rem;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.45;
-  color: var(--gray-500);
-  padding: 0 16px;
-}
-.app-credits.is-ok { color: var(--green); }
-.app-credits.is-warn { color: var(--orange); }
-
-.site-footer {
-  width: 100%;
-  max-width: none;
-  text-align: center;
-  padding: 32px clamp(16px, 4vw, 40px) 40px;
-  margin-top: auto;
-  background: var(--chip-gray);
-  color: var(--body-gray);
-  font-size: 14px;
-  line-height: 1.55;
-  border-top: var(--border-whisper);
-  font-family: var(--font-sans);
-}
-.site-footer strong { color: var(--text); font-weight: 600; }
-.site-footer .foot-pay { margin-top: 12px; font-size: 13px; color: var(--muted-gray); }
-.site-footer .inline-code {
-  font-size: 0.88em;
-  background: var(--white);
-  padding: 2px 8px;
-  border-radius: 6px;
-  color: var(--text);
-  border: 1px solid var(--chip-gray);
-  font-family: ui-monospace, monospace;
-}
 
 /* Paywall modal — white card, deep shadow */
 #paywallModal {
@@ -821,7 +772,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
       <h2 class="app-tool-title">Sign your document</h2>
       <p class="app-tool-intro">Webcam and hand tracking in your browser. <a href="index.html">Home</a></p>
     </div>
-    <p id="creditsStatus" class="app-credits" aria-live="polite"></p>
   <div id="docScreen" class="screen active">
     <div id="docSheetWrapper" class="doc-sheet-stack">
       <div id="docSheet">
@@ -841,11 +791,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
     <p id="docStatus" class="doc-status" role="status"></p>
   </div>
   </section>
-
-  <footer class="site-footer">
-    <p>The camera turns on only after you choose <strong>Sign</strong> or <strong>Unlock to sign</strong>. Your document stays on your device unless you export it.</p>
-    <p class="foot-pay">Stripe success URL should return to this page with <code class="inline-code">?paid=1</code> (for example <code class="inline-code">app.html?paid=1</code>).</p>
-  </footer>
   </main>
 
   <div id="paymentToast" class="payment-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
@@ -946,26 +891,15 @@ body.videoOverlayActive #buttonsRow { display: none; }
       if (canStartSignature()) {
         btn.textContent = 'Sign';
         btn.removeAttribute('aria-describedby');
+        btn.removeAttribute('aria-label');
       } else {
         btn.textContent = 'Unlock to sign — $1';
-        btn.setAttribute('aria-describedby', 'creditsStatus');
+        btn.removeAttribute('aria-describedby');
+        btn.setAttribute('aria-label', 'No signature slots left in this browser. Unlock one more slot for one dollar.');
       }
     }
 
     function updateCreditsStatus() {
-      const el = document.getElementById('creditsStatus');
-      if (!el) return;
-      const left = Math.max(0, allowance() - readDone());
-      const paid = readPaid();
-      el.classList.remove('is-ok', 'is-warn');
-      if (left === 0) {
-        el.classList.add('is-warn');
-        el.textContent = 'No slots left in this browser. Buy another slot for $1 or open the app in another browser if you need a fresh free slot.';
-      } else {
-        el.classList.add('is-ok');
-        const base = `${left} signature slot${left === 1 ? '' : 's'} available in this browser`;
-        el.textContent = paid > 0 ? `${base} (${paid} paid slot${paid === 1 ? '' : 's'} unlocked).` : `${base} (includes your free slot).`;
-      }
       refreshSignButton();
     }
 
