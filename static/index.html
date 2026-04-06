@@ -617,26 +617,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
   margin-top: 28px;
 }
 a.hero-cta-link { text-decoration: none; display: inline-block; }
-.btn-hero-secondary {
-  display: inline-block;
-  background: var(--white);
-  color: var(--black);
-  border: 1px solid var(--black);
-  padding: 14px 28px;
-  border-radius: 999px;
-  font-size: 16px;
-  font-weight: 500;
-  font-family: var(--font-sans);
-  text-decoration: none;
-  box-shadow: var(--shadow-float);
-  transition: background 0.15s, transform 0.12s;
-}
-.btn-hero-secondary:hover {
-  background: var(--hover-gray);
-  transform: translateY(-1px);
-}
-.btn-hero-secondary:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
-.cta-hidden { display: none !important; }
 
 .payment-toast {
   position: fixed; top: 20px; left: 50%;
@@ -691,7 +671,6 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     </div>
     <div class="hero-cta-row">
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
-      <a class="btn-hero-secondary" id="heroCtaSecondary" href="app.html?unlock=1">Buy a slot — $1</a>
     </div>
     </div>
   </header>
@@ -706,19 +685,14 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
 
     function setCtas(){
       var nav=document.getElementById('navCta');
-      var h1=document.getElementById('heroCtaPrimary');
-      var h2=document.getElementById('heroCtaSecondary');
+      var hero=document.getElementById('heroCtaPrimary');
       if(left>0){
-        var firstFree = (done===0);
-        var navTxt = firstFree ? 'Try free' : 'Open signer';
-        var heroTxt = firstFree ? 'Try free' : 'Open signer';
-        if(nav){ nav.href=freeUrl; nav.textContent=navTxt; }
-        if(h1){ h1.href=freeUrl; h1.textContent=heroTxt; }
-        if(h2){ h2.classList.remove('cta-hidden'); }
+        var txt = (done===0) ? 'Try free' : 'Open signer';
+        if(nav){ nav.href=freeUrl; nav.textContent=txt; }
+        if(hero){ hero.href=freeUrl; hero.textContent=txt; }
       } else {
         if(nav){ nav.href=payUrl; nav.textContent='Unlock — $1'; }
-        if(h1){ h1.href=payUrl; h1.textContent='Unlock signer — $1'; }
-        if(h2){ h2.classList.add('cta-hidden'); }
+        if(hero){ hero.href=payUrl; hero.textContent='Unlock — $1'; }
       }
     }
     setCtas();

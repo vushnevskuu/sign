@@ -82,14 +82,20 @@ main.page-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-  padding: 0 0 48px;
+  padding: 0;
 }
 
 h1 { margin-bottom: 0; }
 
 p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 560px; }
+.app-tool-head p,
+.site-footer p {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 /* Top nav */
 .top-nav {
@@ -100,9 +106,9 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1136px;
-  margin: 0 auto;
-  padding: 16px 24px;
+  max-width: 100%;
+  margin: 0;
+  padding: 16px clamp(16px, 4vw, 40px);
   border-bottom: var(--border-whisper);
   background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
@@ -214,15 +220,16 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 
 #status {
   color: var(--text);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
-  margin-top: 20px;
+  margin-top: 16px;
   text-align: center;
   display: none;
+  max-width: 100%;
 }
 
 #signModal {
-  display: none; position: fixed; inset: 0; z-index: 100;
+  display: none; position: fixed; inset: 0; z-index: 110;
   width: 100%; height: 100%;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
@@ -293,8 +300,14 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 #signModalBtns .btn .btnLabel { position: relative; z-index: 1; }
 
 #docScreen {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 24px 20px 32px; max-width: 720px; margin: 0 auto; width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 8px 0 32px;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 #docSheet {
@@ -309,12 +322,29 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 }
 #docSheet canvas { display: block; width: 100%; height: 100%; object-fit: contain; }
 
+/* Кнопки в потоке — иначе absolute ломал отступы и наезжал на футер */
+.doc-sheet-stack {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
 #buttonsRow {
-  position: absolute; top: calc(100% + 16px); left: 0; right: 0;
-  min-height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+  min-height: 52px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 #addDocBtn {
@@ -406,12 +436,15 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 
 #docStatus:empty { display: none; }
 .doc-status {
-  margin-top: 16px;
+  margin-top: 24px;
   font-size: 14px;
   font-weight: 500;
   color: var(--teal);
   text-align: center;
-  max-width: 560px;
+  max-width: min(560px, 100%);
+  padding: 0 16px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .doc-status--error { color: var(--orange); }
 
@@ -557,11 +590,20 @@ body.videoOverlayActive #buttonsRow { display: none; }
 
 .app-section {
   width: 100%;
-  max-width: 1200px;
-  padding: 48px 24px 24px;
+  max-width: 1136px;
+  margin: 0 auto;
+  padding: 28px clamp(16px, 4vw, 40px) 32px;
+  box-sizing: border-box;
 }
-.app-section--tool { padding-top: 32px; }
-.app-tool-head { text-align: center; margin-bottom: 8px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.app-section--tool { padding-top: 24px; }
+.app-tool-head {
+  text-align: center;
+  margin-bottom: 12px;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 8px;
+}
 .app-tool-title {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 4vw, 2rem);
@@ -575,13 +617,14 @@ body.videoOverlayActive #buttonsRow { display: none; }
 .app-tool-intro a { color: var(--brand); font-weight: 600; text-decoration: none; }
 .app-tool-intro a:hover { text-decoration: underline; }
 .app-credits {
-  margin: 0 auto 20px;
-  max-width: 640px;
+  margin: 0 auto 24px;
+  max-width: 40rem;
   text-align: center;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.45;
   color: var(--gray-500);
+  padding: 0 16px;
 }
 .app-credits.is-ok { color: var(--green); }
 .app-credits.is-warn { color: var(--orange); }
@@ -590,24 +633,24 @@ body.videoOverlayActive #buttonsRow { display: none; }
   width: 100%;
   max-width: none;
   text-align: center;
-  padding: 48px 24px 40px;
-  background: var(--black);
-  color: var(--muted-gray);
+  padding: 32px clamp(16px, 4vw, 40px) 40px;
+  margin-top: auto;
+  background: var(--chip-gray);
+  color: var(--body-gray);
   font-size: 14px;
-  margin: 0;
   line-height: 1.55;
-  border-top: none;
+  border-top: var(--border-whisper);
   font-family: var(--font-sans);
 }
-.site-footer strong { color: var(--white); font-weight: 600; }
-.site-footer .foot-pay { margin-top: 12px; font-size: 13px; color: #6b6b6b; }
+.site-footer strong { color: var(--text); font-weight: 600; }
+.site-footer .foot-pay { margin-top: 12px; font-size: 13px; color: var(--muted-gray); }
 .site-footer .inline-code {
   font-size: 0.88em;
-  background: #1a1a1a;
-  padding: 2px 6px;
+  background: var(--white);
+  padding: 2px 8px;
   border-radius: 6px;
-  color: #e8e8e8;
-  border: 1px solid #333333;
+  color: var(--text);
+  border: 1px solid var(--chip-gray);
   font-family: ui-monospace, monospace;
 }
 
@@ -739,6 +782,25 @@ body.videoOverlayActive #buttonsRow { display: none; }
   transform: translateX(-50%) translateY(0);
 }
 
+@media (max-width: 540px) {
+  #buttonsRow {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  #rightButtons {
+    width: 100%;
+    justify-content: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+  #addDocBtn,
+  #docSignBtn,
+  #exportBtn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .payment-toast { transition: none; }
   #videoOverlay.tv-on { animation: none !important; clip-path: none !important; filter: none !important; }
@@ -761,7 +823,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
     </div>
     <p id="creditsStatus" class="app-credits" aria-live="polite"></p>
   <div id="docScreen" class="screen active">
-    <div id="docSheetWrapper" style="position: relative; width: 100%; max-width: 600px;">
+    <div id="docSheetWrapper" class="doc-sheet-stack">
       <div id="docSheet">
         <canvas id="pdfCanvas"></canvas>
         <div id="signatureContainer" class="hidden"></div>
