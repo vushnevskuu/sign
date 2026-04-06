@@ -164,6 +164,34 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 }
 #holdIndicator .holdLabel { position: relative; z-index: 1; }
 
+#videoOverlay .video-overlay-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: min(560px, 100%);
+  box-sizing: border-box;
+}
+.camera-hints {
+  width: 100%;
+  padding: 0 6px;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.94);
+  text-align: left;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+.camera-hints__list {
+  margin: 0;
+  padding-left: 1.35rem;
+}
+.camera-hints__list li { margin-bottom: 8px; }
+.camera-hints__list li:last-child { margin-bottom: 0; }
+.camera-hints strong { font-weight: 600; color: #fff; }
+
 #videoOverlay #container {
   position: relative; max-width: 100%;
   background: var(--white);
@@ -275,6 +303,35 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
 #signConfirmBtn:hover { background: var(--brand-hover); }
 #signModalBtns .btn .btnLabel { position: relative; z-index: 1; }
 
+.sign-modal-hints {
+  width: 100%;
+  max-width: 400px;
+  margin: 0;
+  padding: 0 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  font-family: var(--font-sans);
+}
+.sign-modal-hint {
+  margin: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sign-modal-hint__emoji {
+  flex-shrink: 0;
+  font-size: 1.15em;
+  line-height: 1.3;
+}
+
 #docScreen {
   display: flex;
   flex-direction: column;
@@ -377,7 +434,8 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   -webkit-backdrop-filter: blur(8px);
   padding: 20px; box-sizing: border-box;
   visibility: hidden; pointer-events: none;
-  overflow: hidden;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }
 #videoOverlay.visible { visibility: visible; pointer-events: auto; }
 
@@ -725,7 +783,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
   </style>
 </head>
 <body>
-  <a class="skip-link" href="#app">Skip to document</a>
+  <a class="skip-link" href="#app">Skip to signer</a>
   <nav class="top-nav" aria-label="Primary">
     <a class="top-nav__brand" href="index.html"><span class="top-nav__mark" aria-hidden="true">A</span> Air Sign</a>
   </nav>
@@ -737,7 +795,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
         <canvas id="pdfCanvas"></canvas>
         <div id="signatureContainer" class="hidden"></div>
       </div>
-      <div id="status">Loading...</div>
+      <div id="status">Loading document…</div>
       <input type="file" id="addDocInput" accept=".pdf,image/*,application/pdf" style="display:none">
       <div id="buttonsRow">
         <div id="buttonsRowInner">
@@ -778,11 +836,19 @@ body.videoOverlayActive #buttonsRow { display: none; }
 
   <div id="videoOverlay">
     <div class="scanlines"></div>
-    <div id="container">
-      <div id="holdIndicator"><span class="holdLabel">hold</span></div>
-      <video id="video" autoplay playsinline></video>
-      <canvas id="canvas"></canvas>
-      <canvas id="drawCanvas"></canvas>
+    <div class="video-overlay-stack">
+      <div id="container">
+        <div id="holdIndicator"><span class="holdLabel">hold</span></div>
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas"></canvas>
+        <canvas id="drawCanvas"></canvas>
+      </div>
+      <div class="camera-hints" role="region" aria-label="How Air Sign works">
+        <ol class="camera-hints__list">
+          <li><strong>Draw:</strong> Point your index finger and hold steady (~2&nbsp;s) until you can draw in the air.</li>
+          <li><strong>Preview:</strong> When you are done, make a <strong>fist</strong> or an <strong>OK</strong> 👌 to open the preview.</li>
+        </ol>
+      </div>
     </div>
   </div>
 
@@ -793,6 +859,10 @@ body.videoOverlayActive #buttonsRow { display: none; }
     <div id="signModalBtns">
       <button type="button" class="btn" id="resignBtn"><span class="btnProgress"></span><span class="btnLabel">Reset</span></button>
       <button type="button" class="btn" id="signConfirmBtn"><span class="btnProgress"></span><span class="btnLabel">Confirm</span></button>
+    </div>
+    <div class="sign-modal-hints" role="region" aria-label="Gesture shortcuts">
+      <p class="sign-modal-hint"><span class="sign-modal-hint__emoji" aria-hidden="true">🖕</span> <strong>Reset</strong> — hold this gesture over the button until the bar fills, then release.</p>
+      <p class="sign-modal-hint"><span class="sign-modal-hint__emoji" aria-hidden="true">👌</span> <strong>Confirm</strong> — hold <strong>OK</strong> over the button until the bar fills to place your signature.</p>
     </div>
   </div>
 
@@ -1190,7 +1260,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       } catch (e) {
         console.error('PDF load:', e);
         const _ds = document.getElementById('docStatus');
-        _ds.textContent = 'PDF load error: ' + (e.message || e);
+        _ds.textContent = 'Couldn’t load the sample PDF — ' + (e.message || e);
         _ds.classList.add('doc-status--error');
         const ctx = pdfCanvas.getContext('2d');
         pdfCanvas.width = 600;
@@ -1199,7 +1269,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
         ctx.fillRect(0, 0, 600, 848);
         ctx.fillStyle = '#333';
         ctx.font = '24px sans-serif';
-        ctx.fillText('Document (PDF not loaded)', 40, 80);
+        ctx.fillText('No document loaded yet', 40, 80);
         updateDocSheetAspectRatio();
       }
     }
@@ -1252,7 +1322,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       } catch (err) {
         console.error('Export error:', err);
         const _ds2 = document.getElementById('docStatus');
-        _ds2.textContent = 'Export error: ' + (err.message || err);
+        _ds2.textContent = 'Couldn’t export — ' + (err.message || err);
         _ds2.classList.add('doc-status--error');
       }
     };
@@ -1273,7 +1343,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       e.target.value = '';
       resetDocSignatureState();
       const _dsl = document.getElementById('docStatus');
-      _dsl.textContent = 'Loading...';
+      _dsl.textContent = 'Loading document…';
       _dsl.classList.remove('doc-status--error');
       try {
         const ext = (file.name.split('.').pop() || '').toLowerCase();
@@ -1317,7 +1387,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
           img.onerror = () => {
             URL.revokeObjectURL(url);
             const _di = document.getElementById('docStatus');
-            _di.textContent = 'Failed to load image';
+            _di.textContent = 'Couldn’t load this image — try another file.';
             _di.classList.add('doc-status--error');
           };
           img.src = url;
@@ -1329,7 +1399,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       } catch (err) {
         console.error('Load error:', err);
         const _ds3 = document.getElementById('docStatus');
-        _ds3.textContent = 'Load error: ' + (err.message || err);
+        _ds3.textContent = 'Couldn’t load this file — ' + (err.message || err);
         _ds3.classList.add('doc-status--error');
       }
     };
@@ -1638,7 +1708,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
 
     async function init() {
       try {
-        status.textContent = 'Loading MediaPipe...';
+        status.textContent = 'Loading hand tracking…';
         const mod = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
         const HandLandmarker = mod.HandLandmarker;
         const FilesetResolver = mod.FilesetResolver;
@@ -1650,14 +1720,14 @@ body.videoOverlayActive #buttonsRow { display: none; }
           minHandDetectionConfidence: 0.5,
           minTrackingConfidence: 0.5
         });
-        status.textContent = 'Requesting camera...';
+        status.textContent = 'Requesting camera access…';
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
         video.srcObject = stream;
         await video.play();
-        status.textContent = 'Extend index finger and hold 1.5 sec...';
+        status.textContent = 'Point your index finger — hold steady (~2 s)…';
         requestAnimationFrame(detect);
       } catch (e) {
-        status.textContent = 'Error: ' + e.message;
+        status.textContent = 'Something went wrong: ' + e.message;
         console.error(e);
       }
     }
@@ -1810,7 +1880,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
               showSignModal();
             } else {
               const secLeft = Math.ceil(1.5 - fistHistory.length / 30);
-              status.textContent = clenched ? `Sign in ${secLeft} sec` : `OK in ${secLeft} sec`;
+              status.textContent = clenched ? `Hold fist — ${secLeft}s` : `Hold OK — ${secLeft}s`;
               const progress = fistHistory.length / GESTURE_CONFIRM_FRAMES;
               drawFistSkeletonGreen(lm, canvas.width, canvas.height, progress);
             }
@@ -1821,7 +1891,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
             smoothedPoint = null;
             positionHistory = [];
             fistHistory = [];
-            status.textContent = 'Extend index finger and hold 1.5 sec...';
+            status.textContent = 'Point your index finger — hold steady (~2 s)…';
           } else {
             fistHistory = [];
             const canDrawThisFrame = indexPointing || isIndexExtendedRelative(lm);
@@ -1849,10 +1919,10 @@ body.videoOverlayActive #buttonsRow { display: none; }
               ctx.beginPath();
               ctx.arc(x, y, 9, 0, Math.PI * 2);
               ctx.fill();
-              status.textContent = 'You can draw!';
+              status.textContent = 'Draw in the air.';
             } else {
               smoothedPoint = null;
-              status.textContent = isOtherFingersCurled(lm) ? 'Fist or OK to confirm' : 'Extend index finger';
+              status.textContent = isOtherFingersCurled(lm) ? 'Fist or OK to preview' : 'Point your index finger';
             }
           }
         } else if (isStillIndex && indexPointing && !signModal.classList.contains('visible') && exportBtn.classList.contains('hidden')) {
@@ -1860,10 +1930,10 @@ body.videoOverlayActive #buttonsRow { display: none; }
           countdownStart = null;
           positionHistory = [];
           lastDrawTime = performance.now();
-          status.textContent = 'You can draw!';
+          status.textContent = 'Draw in the air.';
         } else if (isStill && !indexPointing) {
           countdownStart = null;
-          status.textContent = 'Extend index finger';
+          status.textContent = 'Point your index finger';
         } else {
           countdownStart = null;
           if (indexPointing && holdProgress > 0) {
@@ -1872,7 +1942,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
             ctx.beginPath();
             ctx.arc(x, y, Math.max(2, r), 0, Math.PI * 2);
             ctx.fill();
-            status.textContent = `Hold ${Math.ceil(1.5 * (1 - holdProgress / 100))} more sec`;
+            status.textContent = `Hold steady — ${Math.ceil(1.5 * (1 - holdProgress / 100))}s left`;
           }
           lastPoint = null;
           smoothedPoint = null;
@@ -1889,8 +1959,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
         fistFlashState = null;
         wasClenched = false;
         clenchedFrames = 0;
-        if (canDraw) status.textContent = 'Return hand to frame';
-        else status.textContent = 'Extend index finger and hold 1.5 sec...';
+        if (canDraw) status.textContent = 'Bring your hand into the frame';
+        else status.textContent = 'Point your index finger — hold steady (~2 s)…';
         if (signModal.classList.contains('visible')) {
           updatePreviewTilt(null, null);
         }
@@ -1903,7 +1973,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       holdIndicator.style.setProperty('--hold-progress', holdProgress);
       holdIndicator.classList.toggle('filling', !canDraw && holdProgress > 0);
       const secLeft = holdProgress < 100 ? Math.ceil(1.5 * (1 - holdProgress / 100)) : 0;
-      holdIndicator.querySelector('.holdLabel').textContent = canDraw ? 'sign' : (holdProgress > 0 ? secLeft + 's' : 'hold');
+      holdIndicator.querySelector('.holdLabel').textContent = canDraw ? 'Draw' : (holdProgress > 0 ? secLeft + 's' : 'Hold');
 
       if (fistFlashState) drawFistFlash(fistFlashState);
 
