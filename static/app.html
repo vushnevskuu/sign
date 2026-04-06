@@ -3,18 +3,19 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Air Sign — Sign your document</title>
-  <meta name="description" content="Draw your signature in the air with your webcam, place it on your PDF, and export. Hand tracking in the browser.">
-  <link rel="canonical" href="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <title>Air Sign — Sign PDFs with Webcam (Hand Tracking)</title>
+  <meta name="description" content="Open a PDF or image, sign in the air with your webcam, drag the signature, export. Processing stays in your browser. First signature free; optional paid slots.">
+  <meta name="author" content="Alexey Vishnevsky">
+  <link rel="canonical" href="https://vushnevskuu.github.io/sign/app.html">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Air Sign — Webcam PDF signatures">
-  <meta property="og:description" content="Sign documents using your webcam and hand gestures. One free signature; $1 per extra.">
-  <meta property="og:url" content="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <meta property="og:title" content="Air Sign — PDF signer with webcam hand tracking">
+  <meta property="og:description" content="Sign documents in the browser with hand gestures. Your file stays on your device until you export.">
+  <meta property="og:url" content="https://vushnevskuu.github.io/sign/app.html">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Air Sign — Webcam PDF signatures">
-  <meta name="twitter:description" content="Sign PDFs in the browser with hand tracking. One free; $1 for another.">
+  <meta name="twitter:title" content="Air Sign — Webcam PDF signer">
+  <meta name="twitter:description" content="Hand-tracked signatures in the browser. Private, export when you choose.">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures. Requires a camera and modern browser."}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","url":"https://vushnevskuu.github.io/sign/app.html","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","author":{"@type":"Person","name":"Alexey Vishnevsky","sameAs":["https://www.linkedin.com/in/vushnevskuu"]},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures in the browser. Requires a camera and a modern browser."}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -758,6 +759,30 @@ body.videoOverlayActive #buttonsRow { display: none; }
   #videoOverlay .scanlines { animation: none !important; opacity: 0.08; }
 }
 
+.site-global-footer {
+  margin-top: auto;
+  padding: 20px clamp(16px, 4vw, 40px) 28px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted-gray);
+  font-family: var(--font-sans);
+  border-top: var(--border-whisper);
+  background: var(--white);
+}
+.site-global-footer a {
+  color: var(--body-gray);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+  cursor: pointer;
+}
+.site-global-footer a:hover { color: var(--brand); }
+.site-global-footer a:focus-visible {
+  outline: 2px solid var(--focus-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
   </style>
 </head>
 <body>
@@ -770,7 +795,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
   <section id="app" class="app-section app-section--tool" aria-label="Signing app">
     <div class="app-tool-head">
       <h2 class="app-tool-title">Sign your document</h2>
-      <p class="app-tool-intro">Webcam and hand tracking in your browser. <a href="index.html">Home</a></p>
+      <p class="app-tool-intro">Add a PDF or image, then tap <strong>Sign</strong>.</p>
     </div>
   <div id="docScreen" class="screen active">
     <div id="docSheetWrapper" class="doc-sheet-stack">
@@ -792,6 +817,9 @@ body.videoOverlayActive #buttonsRow { display: none; }
   </div>
   </section>
   </main>
+  <footer class="site-global-footer" role="contentinfo">
+    <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">by Alexey Vishnevsky</a>
+  </footer>
 
   <div id="paymentToast" class="payment-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
 
@@ -802,7 +830,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       <ol id="paywallSteps" class="paywall-steps">
         <li>Open secure checkout (new tab).</li>
         <li>Complete payment with your card or wallet.</li>
-        <li>Return to the signer. Your slot unlocks when Stripe redirects to <code class="inline-code">app.html?paid=1</code> (or your full URL with that query).</li>
+        <li>Return here; your slot unlocks after checkout redirects with <code class="inline-code">?paid=1</code> in the URL.</li>
       </ol>
       <p id="paywallUnavailable" class="paywall-lede" hidden>Online checkout is not connected yet. Please try again later, or contact the site owner.</p>
       <p class="paywall-secure">Card details are handled by Stripe. This site does not store your payment information.</p>
@@ -830,8 +858,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
       <canvas id="signPreviewCanvas"></canvas>
     </div>
     <div id="signModalBtns">
-      <button class="btn" id="resignBtn"><span class="btnProgress"></span><span class="btnLabel">Reset&#8202;🖕</span></button>
-      <button class="btn" id="signConfirmBtn"><span class="btnProgress"></span><span class="btnLabel">Sign&#8202;👌</span></button>
+      <button type="button" class="btn" id="resignBtn"><span class="btnProgress"></span><span class="btnLabel">Reset</span></button>
+      <button type="button" class="btn" id="signConfirmBtn"><span class="btnProgress"></span><span class="btnLabel">Confirm</span></button>
     </div>
   </div>
 

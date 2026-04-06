@@ -3,25 +3,23 @@
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Air Sign — Sign PDFs with your webcam (hand tracking)</title>
-  <meta name="description" content="Draw your signature in the air with your MacBook camera, place it on a PDF, and export. One signature free; unlock another for $1. Runs in the browser with MediaPipe hand tracking.">
-  <link rel="canonical" href="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <title>Air Sign — Webcam PDF Signatures in Your Browser</title>
+  <meta name="description" content="Sign PDFs in the air with your webcam: hand tracking in the browser, gesture confirm, drag signature, export. Private — files stay on your device. First signature free.">
+  <meta name="author" content="Alexey Vishnevsky">
+  <link rel="canonical" href="https://vushnevskuu.github.io/sign/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Air Sign — Webcam PDF signatures">
-  <meta property="og:description" content="Sign documents using your webcam and hand gestures. One free signature; $1 per extra.">
-  <meta property="og:url" content="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <meta property="og:title" content="Air Sign — Webcam PDF signatures in the browser">
+  <meta property="og:description" content="Draw your signature in the air, place it on a PDF, export. Hand tracking runs locally in your browser.">
+  <meta property="og:url" content="https://vushnevskuu.github.io/sign/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Air Sign — Webcam PDF signatures">
-  <meta name="twitter:description" content="Sign PDFs in the browser with hand tracking. One free; $1 for another.">
+  <meta name="twitter:description" content="Sign PDFs with hand tracking in the browser. Private; first signature free.">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures. Requires a camera and modern browser."}
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","url":"https://vushnevskuu.github.io/sign/","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","author":{"@type":"Person","name":"Alexey Vishnevsky","sameAs":["https://www.linkedin.com/in/vushnevskuu"]},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures in the browser. Requires a camera and a modern browser."}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <style>
 /* Uber-inspired (awesome-design-md uber) — B/W + chip grays, pill CTAs. Brand blue refined. */
 :root {
@@ -706,6 +704,30 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   .hero-video { animation: none; }
 }
 
+.site-global-footer {
+  margin-top: auto;
+  padding: 20px clamp(16px, 4vw, 40px) 28px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted-gray);
+  font-family: var(--font-sans);
+  border-top: var(--border-whisper);
+  background: var(--white);
+}
+.site-global-footer a {
+  color: var(--body-gray);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s;
+  cursor: pointer;
+}
+.site-global-footer a:hover { color: var(--brand); }
+.site-global-footer a:focus-visible {
+  outline: 2px solid var(--focus-blue);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
   </style>
 </head>
 <body>
@@ -719,7 +741,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     <div class="site-header__inner">
     <div class="hero-copy">
     <h1>Sign PDFs in the air with your webcam</h1>
-    <p class="lede">Use hand tracking in the browser: draw your signature, confirm with gestures, drag it on the page, and export a PDF. Built for laptops with a camera (for example MacBook).</p>
+    <p class="lede">Hand tracking in your browser: draw in the air, confirm with gestures, place on a PDF or image, export. Nothing is uploaded — your file stays on your device.</p>
     <div class="badge-row" role="list">
       <span class="badge badge--neutral" role="listitem">Webcam required</span>
       <span class="badge badge--brand" role="listitem">Private — camera stays in your browser</span>
@@ -732,11 +754,14 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       <video class="hero-video" id="heroDemoVideo" autoplay muted loop playsinline controls preload="auto" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser (silent loop)">
         <source src="media/demosign.mp4" type="video/mp4">
       </video>
-      <figcaption class="hero-video-caption">Silent loop demo — in-browser hand tracking (no upload).</figcaption>
+      <figcaption class="hero-video-caption">Silent demo · loops automatically</figcaption>
     </figure>
     </div>
   </header>
   </main>
+  <footer class="site-global-footer" role="contentinfo">
+    <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">by Alexey Vishnevsky</a>
+  </footer>
 
   <script>
   (function(){
