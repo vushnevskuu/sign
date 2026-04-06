@@ -763,7 +763,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
 
   <script>
   (function(){
-    var PAYWALL_DISABLED = true;
+    var PAYWALL_DISABLED = false;
     function rp(){ var n=parseInt(localStorage.getItem('airsign_paid_credits')||'0',10); return Number.isFinite(n)&&n>=0?n:0; }
     function rd(){ var n=parseInt(localStorage.getItem('airsign_signatures_done')||'0',10); return Number.isFinite(n)&&n>=0?n:0; }
     var allow=1+rp(), done=rd(), left=Math.max(0,allow-done);
