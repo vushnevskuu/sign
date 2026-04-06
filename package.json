@@ -1,7 +1,9 @@
 {
   "name": "hand-tool-hvat",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
-    "start": "npx serve static -p 3000"
+    "start": "npx serve static -p 3000",
+    "build": "rm -rf public && mkdir -p public && cp -R static/. public/"
   }
 }

@@ -1,16 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Document signing</title>
+  <title>Air Sign — Sign PDFs with your webcam (hand tracking)</title>
+  <meta name="description" content="Draw your signature in the air with your MacBook camera, place it on a PDF, and export. One signature free; unlock another for $1. Runs in the browser with MediaPipe hand tracking.">
+  <link rel="canonical" href="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Air Sign — Webcam PDF signatures">
+  <meta property="og:description" content="Sign documents using your webcam and hand gestures. One free signature; $1 per extra.">
+  <meta property="og:url" content="https://YOUR_GITHUB_USER.github.io/YOUR_REPO/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Air Sign — Webcam PDF signatures">
+  <meta name="twitter:description" content="Sign PDFs in the browser with hand tracking. One free; $1 for another.">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures. Requires a camera and modern browser."}
+  </script>
   <link rel="stylesheet" href="https://use.typekit.net/ytu6skd.css">
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: #1a1a2e; color: #eee; font-family: "clother", sans-serif; font-weight: 400; font-style: normal; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+    body { background: #1a1a2e; color: #eee; font-family: "clother", sans-serif; font-weight: 400; font-style: normal; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 48px 20px 40px; }
     h1 { margin-bottom: 10px; }
     p { color: #aaa; margin-bottom: 10px; text-align: center; max-width: 500px; }
     #holdIndicator {
@@ -204,9 +216,84 @@
     body.videoOverlayActive #buttonsRow { display: none; }
     .screen { display: none; }
     .screen.active { display: flex; flex-direction: column; align-items: center; }
+    .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+    .skip-link:focus { position: fixed; left: 16px; top: 16px; width: auto; height: auto; padding: 8px 12px; background: #0038e9; color: #fff; z-index: 200; border-radius: 8px; }
+    .site-header { text-align: center; max-width: 640px; margin: 0 auto 32px; padding: 0 20px; }
+    .site-header h1 { font-size: clamp(1.75rem, 4vw, 2.25rem); font-weight: 600; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.15; }
+    .site-header .lede { color: #b8bcc8; font-size: 1.05rem; line-height: 1.5; margin-bottom: 16px; }
+    .badge-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .badge { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,0.08); color: #c5c9d4; border: 1px solid rgba(255,255,255,0.12); }
+    .pricing { max-width: 560px; margin: 0 auto 40px; padding: 20px 24px; border-radius: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .pricing h2 { font-size: 1rem; font-weight: 600; margin-bottom: 14px; color: #e8eaf0; }
+    .pricing ul { list-style: none; text-align: left; margin: 0; padding: 0; }
+    .pricing li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: #c5c9d4; font-size: 15px; }
+    .pricing li:last-child { border-bottom: none; }
+    .pricing .price { color: #fff; font-weight: 600; white-space: nowrap; }
+    .pricing .note { margin-top: 14px; font-size: 13px; color: #8b90a0; line-height: 1.45; }
+    #creditsStatus { margin-top: 12px; font-size: 14px; color: #4fc3f7; line-height: 1.45; }
+    #creditsStatus.is-ok { color: #7ae582; }
+    #creditsStatus.is-warn { color: #ffc857; }
+    .app-section { width: 100%; }
+    .site-footer { text-align: center; padding: 48px 20px 32px; color: #6d7385; font-size: 13px; max-width: 560px; margin: 0 auto; line-height: 1.55; }
+    .site-footer .foot-pay { margin-top: 12px; font-size: 12px; color: #5c6274; }
+    .pricing-actions { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: center; }
+    .btn-pricing { background: transparent; color: #e8eaf0; border: 1px solid rgba(255,255,255,0.22); padding: 10px 18px; border-radius: 120px; font-size: 14px; font-weight: 500; cursor: pointer; font-family: inherit; transition: background 0.15s, border-color 0.15s, transform 0.15s; }
+    .btn-pricing:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.35); transform: scale(1.02); }
+    .btn-pricing:focus-visible { outline: 2px solid #4fc3f7; outline-offset: 2px; }
+    .inline-code { font-size: 0.92em; background: rgba(0,0,0,0.35); padding: 2px 6px; border-radius: 4px; color: #dbe0f0; }
+    #paywallModal { display: none; position: fixed; inset: 0; z-index: 120; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 24px; }
+    #paywallModal.visible { display: flex; }
+    #paywallModal .box { max-width: 420px; width: 100%; background: #252536; border-radius: 18px; padding: 26px 24px 22px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 48px rgba(0,0,0,0.45); }
+    #paywallModal h3 { margin-bottom: 10px; font-size: 1.2rem; font-weight: 600; letter-spacing: -0.02em; color: #f2f4f8; }
+    #paywallModal .paywall-lede { color: #b4b9c7; font-size: 14px; margin-bottom: 16px; line-height: 1.55; text-align: left; }
+    #paywallModal .paywall-steps { margin: 0 0 16px 1.1rem; padding: 0; color: #a8adc0; font-size: 14px; line-height: 1.55; text-align: left; }
+    #paywallModal .paywall-steps li { margin-bottom: 8px; }
+    #paywallModal .paywall-steps li:last-child { margin-bottom: 0; }
+    #paywallModal .paywall-secure { font-size: 12px; color: #7a8194; margin-bottom: 18px; line-height: 1.45; text-align: left; }
+    #paywallModal .paywall-actions { display: flex; flex-direction: column; gap: 10px; }
+    #paywallModal .paywall-actions .row-inline { display: flex; flex-wrap: wrap; gap: 10px; }
+    #paywallModal .btn-stripe { background: #635bff; color: #fff; border: none; padding: 12px 20px; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; box-shadow: 0 6px 20px rgba(99,91,255,0.35); transition: background 0.15s, transform 0.15s; flex: 1; min-width: 160px; }
+    #paywallModal .btn-stripe:hover { background: #7a73ff; transform: translateY(-1px); }
+    #paywallModal .btn-stripe:focus-visible { outline: 2px solid #a59fff; outline-offset: 2px; }
+    #paywallModal .btn-stripe.is-disabled { opacity: 0.45; pointer-events: none; cursor: not-allowed; transform: none; box-shadow: none; }
+    #paywallModal .btn-ghost { background: transparent; color: #e0e3ed; border: 1px solid rgba(255,255,255,0.22); padding: 10px 18px; border-radius: 10px; cursor: pointer; font-size: 14px; font-family: inherit; transition: background 0.15s, border-color 0.15s; }
+    #paywallModal .btn-ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.35); }
+    #paywallModal .btn-ghost:focus-visible { outline: 2px solid #4fc3f7; outline-offset: 2px; }
+    .payment-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-12px); z-index: 200; max-width: min(420px, calc(100% - 32px)); padding: 14px 18px; border-radius: 12px; background: #1e3a2f; border: 1px solid rgba(122,229,130,0.45); color: #e8f5e9; font-size: 14px; line-height: 1.45; box-shadow: 0 12px 32px rgba(0,0,0,0.35); opacity: 0; visibility: hidden; transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; pointer-events: none; text-align: center; }
+    .payment-toast.visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    @media (prefers-reduced-motion: reduce) {
+      .payment-toast { transition: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #videoOverlay.tv-on { animation: none !important; clip-path: none !important; filter: none !important; }
+      #videoOverlay .scanlines { animation: none !important; opacity: 0.15; }
+    }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#app">Skip to app</a>
+  <header class="site-header">
+    <h1>Sign PDFs in the air with your webcam</h1>
+    <p class="lede">Use hand tracking in the browser: draw your signature, confirm with gestures, drag it on the page, and export a PDF. Built for laptops with a camera (for example MacBook).</p>
+    <div class="badge-row" role="list">
+      <span class="badge" role="listitem">Webcam required</span>
+      <span class="badge" role="listitem">English UI</span>
+      <span class="badge" role="listitem">Private — camera stays in your browser</span>
+    </div>
+  </header>
+  <section class="pricing" id="pay" aria-labelledby="pricing-heading">
+    <h2 id="pricing-heading">Simple pricing</h2>
+    <ul>
+      <li><span>First signature</span><span class="price">Free</span></li>
+      <li><span>Each extra signature slot</span><span class="price">$1</span></li>
+    </ul>
+    <p class="note">Signature slots are saved in <strong>this browser only</strong>. Clearing site data or using another device starts again from the free slot. Each successful $1 checkout adds <strong>one</strong> extra slot.</p>
+    <p id="creditsStatus" aria-live="polite"></p>
+    <div class="pricing-actions">
+      <button type="button" class="btn-pricing" id="pricingUnlockBtn" aria-describedby="creditsStatus">Buy another slot — $1</button>
+    </div>
+  </section>
+  <section id="app" class="app-section" aria-label="Signing app">
   <div id="docScreen" class="screen active">
     <div id="docSheetWrapper" style="position: relative; width: 100%; max-width: 600px;">
       <div id="docSheet">
@@ -224,6 +311,34 @@
       </div>
     </div>
     <p id="docStatus" style="color:#4fc3f7; margin-top:16px; font-size:14px;"></p>
+  </div>
+  </section>
+
+  <footer class="site-footer">
+    <p>Air Sign runs in your browser. The camera turns on only after you choose <strong>Sign</strong> or <strong>Unlock to sign</strong>. Your document stays on your device unless you export it.</p>
+    <p class="foot-pay">Payments go through Stripe. For billing questions, use the receipt email from Stripe. This page unlocks slots when your Stripe success link returns with <code class="inline-code">?paid=1</code>.</p>
+  </footer>
+
+  <div id="paymentToast" class="payment-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+  <div id="paywallModal" role="dialog" aria-modal="true" aria-labelledby="paywall-title" aria-describedby="paywall-desc">
+    <div class="box">
+      <h3 id="paywall-title">Unlock one more signature</h3>
+      <p id="paywall-desc" class="paywall-lede">You have used every signature slot stored in this browser. Add another slot for <strong>$1 USD</strong> via Stripe Checkout.</p>
+      <ol id="paywallSteps" class="paywall-steps">
+        <li>Open secure checkout (new tab).</li>
+        <li>Complete payment with your card or wallet.</li>
+        <li>Return to this tab. Your slot unlocks when Stripe sends you back with <code class="inline-code">?paid=1</code> on the URL.</li>
+      </ol>
+      <p id="paywallUnavailable" class="paywall-lede" hidden>Online checkout is not connected yet. Please try again later, or contact the site owner.</p>
+      <p class="paywall-secure">Card details are handled by Stripe. This site does not store your payment information.</p>
+      <div class="paywall-actions">
+        <div id="paywallStripeRow" class="row-inline">
+          <a id="paywallStripeBtn" class="btn-stripe" href="#" target="_blank" rel="noopener noreferrer">Continue to Stripe Checkout</a>
+        </div>
+        <button type="button" class="btn-ghost" id="paywallCloseBtn">Not now</button>
+      </div>
+    </div>
   </div>
 
   <div id="videoOverlay">
@@ -246,7 +361,177 @@
     </div>
   </div>
 
+  <!-- Owner: paste your Stripe Payment Link into STRIPE_PAYMENT_LINK in the script below. Stripe success URL should redirect here with ?paid=1 -->
   <script type="module">
+    /** Paste your Stripe Payment Link (https://buy.stripe.com/...). Leave empty until it is ready. Success URL must redirect back with ?paid=1 */
+    const STRIPE_PAYMENT_LINK = '';
+
+    const STORAGE_PAID = 'airsign_paid_credits';
+    const STORAGE_DONE = 'airsign_signatures_done';
+
+    function isStripeConfigured() {
+      const u = String(STRIPE_PAYMENT_LINK || '').trim();
+      return u.length > 0 && /^https:\/\//i.test(u);
+    }
+
+    function readPaid() {
+      const n = parseInt(localStorage.getItem(STORAGE_PAID) || '0', 10);
+      return Number.isFinite(n) && n >= 0 ? n : 0;
+    }
+    function writePaid(n) {
+      localStorage.setItem(STORAGE_PAID, String(Math.max(0, n)));
+    }
+    function readDone() {
+      const n = parseInt(localStorage.getItem(STORAGE_DONE) || '0', 10);
+      return Number.isFinite(n) && n >= 0 ? n : 0;
+    }
+    function writeDone(n) {
+      localStorage.setItem(STORAGE_DONE, String(Math.max(0, n)));
+    }
+    function allowance() {
+      return 1 + readPaid();
+    }
+    function grantPaidReturn() {
+      const p = new URLSearchParams(window.location.search);
+      if (p.get('paid') === '1') {
+        writePaid(readPaid() + 1);
+        p.delete('paid');
+        const url = new URL(window.location.href);
+        url.search = p.toString() ? '?' + p.toString() : '';
+        history.replaceState({}, '', url.pathname + url.search + url.hash);
+        return true;
+      }
+      return false;
+    }
+    function canStartSignature() {
+      return readDone() < allowance();
+    }
+    function recordSignatureCompleted() {
+      writeDone(readDone() + 1);
+      updateCreditsStatus();
+    }
+
+    function refreshSignButton() {
+      const btn = document.getElementById('docSignBtn');
+      if (!btn || btn.classList.contains('hidden')) return;
+      if (canStartSignature()) {
+        btn.textContent = 'Sign';
+        btn.removeAttribute('aria-describedby');
+      } else {
+        btn.textContent = 'Unlock to sign — $1';
+        btn.setAttribute('aria-describedby', 'creditsStatus');
+      }
+    }
+
+    function updateCreditsStatus() {
+      const el = document.getElementById('creditsStatus');
+      if (!el) return;
+      const left = Math.max(0, allowance() - readDone());
+      const paid = readPaid();
+      el.classList.remove('is-ok', 'is-warn');
+      if (left === 0) {
+        el.classList.add('is-warn');
+        el.textContent = 'No slots left in this browser. Buy another slot for $1 or open the app in another browser if you need a fresh free slot.';
+      } else {
+        el.classList.add('is-ok');
+        const base = `${left} signature slot${left === 1 ? '' : 's'} available in this browser`;
+        el.textContent = paid > 0 ? `${base} (${paid} paid slot${paid === 1 ? '' : 's'} unlocked).` : `${base} (includes your free slot).`;
+      }
+      refreshSignButton();
+    }
+
+    function showPaymentSuccessToast() {
+      const t = document.getElementById('paymentToast');
+      if (!t) return;
+      t.textContent = 'Payment received. You have one more signature slot in this browser.';
+      t.hidden = false;
+      requestAnimationFrame(() => t.classList.add('visible'));
+      clearTimeout(window.__airsignPayToastTimer);
+      window.__airsignPayToastTimer = setTimeout(() => {
+        t.classList.remove('visible');
+        setTimeout(() => { t.hidden = true; }, 280);
+      }, 7000);
+    }
+
+    const paywallModal = document.getElementById('paywallModal');
+    const paywallStripeBtn = document.getElementById('paywallStripeBtn');
+    const paywallCloseBtn = document.getElementById('paywallCloseBtn');
+    const paywallTitle = document.getElementById('paywall-title');
+    const paywallDesc = document.getElementById('paywall-desc');
+    const paywallSteps = document.getElementById('paywallSteps');
+    const paywallUnavailable = document.getElementById('paywallUnavailable');
+    const paywallStripeRow = document.getElementById('paywallStripeRow');
+
+    let paywallPreviousFocus = null;
+
+    function syncPaywallUi() {
+      const ok = isStripeConfigured();
+      const outOfSlots = !canStartSignature();
+      if (ok) {
+        if (outOfSlots) {
+          paywallTitle.textContent = 'Unlock one more signature';
+          paywallDesc.innerHTML = 'You have used every signature slot stored in this browser. Add another slot for <strong>$1 USD</strong> via Stripe Checkout.';
+        } else {
+          paywallTitle.textContent = 'Add a signature slot';
+          paywallDesc.innerHTML = 'You still have at least one slot left. Buying now adds <strong>one more</strong> $1 slot to this browser for a future document.';
+        }
+        paywallDesc.hidden = false;
+        paywallSteps.hidden = false;
+        paywallUnavailable.hidden = true;
+        paywallStripeRow.hidden = false;
+        paywallStripeBtn.href = STRIPE_PAYMENT_LINK.trim();
+        paywallStripeBtn.classList.remove('is-disabled');
+        paywallModal.setAttribute('aria-describedby', 'paywall-desc');
+      } else {
+        paywallTitle.textContent = 'Checkout is not available';
+        paywallDesc.hidden = true;
+        paywallSteps.hidden = true;
+        paywallUnavailable.hidden = false;
+        paywallStripeRow.hidden = true;
+        paywallStripeBtn.href = '#';
+        paywallStripeBtn.classList.add('is-disabled');
+        paywallModal.setAttribute('aria-describedby', 'paywallUnavailable');
+      }
+    }
+
+    function closePaywall() {
+      if (!paywallModal?.classList.contains('visible')) return;
+      paywallModal.classList.remove('visible');
+      const prev = paywallPreviousFocus;
+      paywallPreviousFocus = null;
+      if (prev && typeof prev.focus === 'function') {
+        try { prev.focus(); } catch (_) {}
+      }
+    }
+
+    function openPaywall() {
+      syncPaywallUi();
+      paywallPreviousFocus = document.activeElement;
+      paywallModal.classList.add('visible');
+      if (isStripeConfigured()) {
+        paywallStripeBtn.focus();
+      } else {
+        paywallCloseBtn.focus();
+      }
+    }
+
+    paywallCloseBtn?.addEventListener('click', closePaywall);
+    paywallModal?.addEventListener('click', (e) => {
+      if (e.target === paywallModal) closePaywall();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && paywallModal?.classList.contains('visible')) {
+        e.preventDefault();
+        closePaywall();
+      }
+    });
+
+    document.getElementById('pricingUnlockBtn')?.addEventListener('click', () => openPaywall());
+
+    const paidAdded = grantPaidReturn();
+    updateCreditsStatus();
+    if (paidAdded) showPaymentSuccessToast();
+
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
@@ -523,6 +808,7 @@
       docSignBtn.classList.remove('hidden');
       exportBtn.classList.add('hidden');
       addDocBtn.textContent = 'Add your own document';
+      updateCreditsStatus();
     }
 
     addDocInput.onchange = async (e) => {
@@ -580,6 +866,10 @@
     };
 
     docSignBtn.onclick = () => {
+      if (!canStartSignature()) {
+        openPaywall();
+        return;
+      }
       document.getElementById('docStatus').textContent = '';
       videoOverlay.classList.add('visible', 'tv-on');
       document.body.classList.add('videoOverlayActive');
@@ -786,6 +1076,7 @@
 
     signConfirmBtn.onclick = () => {
       signModal.classList.remove('visible');
+      recordSignatureCompleted();
       const dataUrl = drawCanvas.toDataURL('image/png');
       const strokes = [...strokeRecording];
       const srcW = drawCanvas.width, srcH = drawCanvas.height;
@@ -1166,7 +1457,6 @@
     }
 
     loadPdf();
-    init();
   </script>
 </body>
 </html>
