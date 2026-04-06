@@ -96,20 +96,6 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   letter-spacing: -0.02em;
 }
 .top-nav__brand:hover { color: var(--notion-blue); }
-.top-nav__links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  list-style: none;
-}
-.top-nav__links a {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--gray-500);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.top-nav__links a:hover { color: var(--text); text-decoration: underline; }
 .top-nav__cta {
   display: inline-block;
   background: var(--notion-blue);
@@ -123,10 +109,6 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   transition: background 0.15s;
 }
 .top-nav__cta:hover { background: var(--active-blue); }
-
-@media (max-width: 640px) {
-  .top-nav__links { display: none; }
-}
 
 /* Camera / overlay */
 #holdIndicator {
@@ -693,10 +675,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
   <a class="skip-link" href="#app">Skip to document</a>
   <nav class="top-nav" aria-label="Primary">
     <a class="top-nav__brand" href="index.html">Air Sign</a>
-    <ul class="top-nav__links">
-      <li><a href="index.html#pay">Pricing</a></li>
-      <li><a href="index.html">How it works</a></li>
-    </ul>
     <a class="top-nav__cta" href="index.html">Back to home</a>
   </nav>
   <main class="page-main">

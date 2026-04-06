@@ -96,20 +96,6 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   letter-spacing: -0.02em;
 }
 .top-nav__brand:hover { color: var(--notion-blue); }
-.top-nav__links {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  list-style: none;
-}
-.top-nav__links a {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--gray-500);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-.top-nav__links a:hover { color: var(--text); text-decoration: underline; }
 .top-nav__cta {
   display: inline-block;
   background: var(--notion-blue);
@@ -123,10 +109,6 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   transition: background 0.15s;
 }
 .top-nav__cta:hover { background: var(--active-blue); }
-
-@media (max-width: 640px) {
-  .top-nav__links { display: none; }
-}
 
 /* Camera / overlay */
 #holdIndicator {
@@ -650,6 +632,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
 }
 .btn-hero-secondary:hover { background: rgba(0, 0, 0, 0.08); }
 .btn-hero-secondary:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
+.cta-hidden { display: none !important; }
 
 .payment-toast {
   position: fixed; top: 20px; left: 50%;
@@ -690,11 +673,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   <a class="skip-link" href="app.html#app">Skip to signer</a>
   <nav class="top-nav" aria-label="Primary">
     <a class="top-nav__brand" href="index.html">Air Sign</a>
-    <ul class="top-nav__links">
-      <li><a href="#pay">Pricing</a></li>
-      <li><a href="app.html">Signer</a></li>
-    </ul>
-    <a class="top-nav__cta" href="app.html">Try free</a>
+    <a class="top-nav__cta" id="navCta" href="app.html">Try free</a>
   </nav>
   <main class="page-main">
   <header class="site-header">
@@ -702,12 +681,11 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     <p class="lede">Use hand tracking in the browser: draw your signature, confirm with gestures, drag it on the page, and export a PDF. Built for laptops with a camera (for example MacBook).</p>
     <div class="badge-row" role="list">
       <span class="badge" role="listitem">Webcam required</span>
-      <span class="badge" role="listitem">English UI</span>
       <span class="badge" role="listitem">Private — camera stays in your browser</span>
     </div>
     <div class="hero-cta-row">
-      <a class="btn-pricing hero-cta-link" href="app.html">Try free</a>
-      <a class="btn-hero-secondary" href="app.html?unlock=1">Buy a slot — $1</a>
+      <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
+      <a class="btn-hero-secondary" id="heroCtaSecondary" href="app.html?unlock=1">Buy a slot — $1</a>
     </div>
   </header>
   <div class="pricing-wrap">
@@ -720,8 +698,8 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     <p class="note">Signature slots are saved in <strong>this browser only</strong>. Clearing site data or using another device starts again from the free slot. Each successful $1 checkout adds <strong>one</strong> extra slot.</p>
     <p id="creditsStatus" aria-live="polite"></p>
     <div class="pricing-actions">
-      <a class="btn-pricing hero-cta-link" href="app.html" aria-describedby="creditsStatus">Open signer — try free</a>
-      <a class="btn-hero-secondary" href="app.html?unlock=1">Buy another slot — $1</a>
+      <a class="btn-pricing hero-cta-link" id="pricingCtaPrimary" href="app.html" aria-describedby="creditsStatus">Open signer — try free</a>
+      <a class="btn-hero-secondary" id="pricingCtaSecondary" href="app.html?unlock=1">Buy another slot — $1</a>
     </div>
   </section>
   </div>
@@ -735,12 +713,46 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   (function(){
     function rp(){ var n=parseInt(localStorage.getItem('airsign_paid_credits')||'0',10); return Number.isFinite(n)&&n>=0?n:0; }
     function rd(){ var n=parseInt(localStorage.getItem('airsign_signatures_done')||'0',10); return Number.isFinite(n)&&n>=0?n:0; }
-    var allow=1+rp(), left=Math.max(0,allow-rd());
+    var allow=1+rp(), done=rd(), left=Math.max(0,allow-done);
+    var payUrl='app.html?unlock=1', freeUrl='app.html';
+
+    function setCtas(){
+      var nav=document.getElementById('navCta');
+      var h1=document.getElementById('heroCtaPrimary');
+      var h2=document.getElementById('heroCtaSecondary');
+      var p1=document.getElementById('pricingCtaPrimary');
+      var p2=document.getElementById('pricingCtaSecondary');
+      if(left>0){
+        var firstFree = (done===0);
+        var navTxt = firstFree ? 'Try free' : 'Open signer';
+        var heroTxt = firstFree ? 'Try free' : 'Open signer';
+        var priceTxt = firstFree ? 'Open signer — try free' : 'Open signer';
+        if(nav){ nav.href=freeUrl; nav.textContent=navTxt; }
+        if(h1){ h1.href=freeUrl; h1.textContent=heroTxt; }
+        if(h2){ h2.classList.remove('cta-hidden'); }
+        if(p1){ p1.href=freeUrl; p1.textContent=priceTxt; }
+        if(p2){ p2.classList.remove('cta-hidden'); }
+      } else {
+        if(nav){ nav.href=payUrl; nav.textContent='Unlock — $1'; }
+        if(h1){ h1.href=payUrl; h1.textContent='Unlock signer — $1'; }
+        if(h2){ h2.classList.add('cta-hidden'); }
+        if(p1){ p1.href=payUrl; p1.textContent='Unlock signer — $1'; }
+        if(p2){ p2.classList.add('cta-hidden'); }
+      }
+    }
+    setCtas();
+
     var el=document.getElementById('creditsStatus');
-    if(!el) return;
-    el.classList.remove('is-ok','is-warn');
-    if(left===0){ el.classList.add('is-warn'); el.textContent='No slots left in this browser. Open the signer to buy another for $1.'; }
-    else { el.classList.add('is-ok'); el.textContent=left+' signature slot'+(left===1?'':'s')+' available on the signer page.'; }
+    if(el){
+      el.classList.remove('is-ok','is-warn');
+      if(left===0){
+        el.classList.add('is-warn');
+        el.textContent='No free slot left in this browser. Use the blue button to unlock the signer for $1.';
+      } else {
+        el.classList.add('is-ok');
+        el.textContent=left+' signature slot'+(left===1?'':'s')+' available on the signer page.';
+      }
+    }
   })();
   </script>
 </body>
