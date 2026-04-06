@@ -417,61 +417,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
   border: none;
 }
 
-/* Pricing card on warm band */
-.pricing-wrap {
-  width: 100%;
-  background: var(--warm-white);
-  border-top: none;
-  border-bottom: var(--border-whisper);
-  padding: 48px 24px;
-}
-.pricing {
-  max-width: 560px;
-  margin: 0 auto;
-  padding: 24px;
-  border-radius: 12px;
-  background: var(--white);
-  border: var(--border-whisper);
-  box-shadow: var(--shadow-card);
-}
-.pricing h2 {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.25px;
-  line-height: 1.27;
-  margin-bottom: 16px;
-  color: var(--text);
-  text-align: left;
-}
-.pricing ul { list-style: none; text-align: left; margin: 0; padding: 0; }
-.pricing li {
-  display: flex; justify-content: space-between; align-items: baseline;
-  gap: 16px; padding: 12px 0;
-  border-bottom: var(--border-whisper);
-  color: var(--gray-500);
-  font-size: 16px;
-}
-.pricing li:last-child { border-bottom: none; }
-.pricing .price { color: var(--text); font-weight: 600; white-space: nowrap; }
-.pricing .note {
-  margin-top: 16px;
-  font-size: 14px;
-  color: var(--gray-500);
-  line-height: 1.5;
-  text-align: left;
-}
-#creditsStatus {
-  margin-top: 14px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1.45;
-  text-align: left;
-  color: var(--gray-500);
-}
-#creditsStatus.is-ok { color: var(--green); }
-#creditsStatus.is-warn { color: var(--orange); }
-
-.pricing-actions { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; }
+/* Primary CTA */
 .btn-pricing {
   background: var(--notion-blue);
   color: var(--white);
@@ -688,23 +634,8 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       <a class="btn-hero-secondary" id="heroCtaSecondary" href="app.html?unlock=1">Buy a slot — $1</a>
     </div>
   </header>
-  <div class="pricing-wrap">
-  <section class="pricing" id="pay" aria-labelledby="pricing-heading">
-    <h2 id="pricing-heading">Simple pricing</h2>
-    <ul>
-      <li><span>First signature</span><span class="price">Free</span></li>
-      <li><span>Each extra signature slot</span><span class="price">$1</span></li>
-    </ul>
-    <p class="note">Signature slots are saved in <strong>this browser only</strong>. Clearing site data or using another device starts again from the free slot. Each successful $1 checkout adds <strong>one</strong> extra slot.</p>
-    <p id="creditsStatus" aria-live="polite"></p>
-    <div class="pricing-actions">
-      <a class="btn-pricing hero-cta-link" id="pricingCtaPrimary" href="app.html" aria-describedby="creditsStatus">Open signer — try free</a>
-      <a class="btn-hero-secondary" id="pricingCtaSecondary" href="app.html?unlock=1">Buy another slot — $1</a>
-    </div>
-  </section>
-  </div>
   <footer class="site-footer">
-    <p>This page explains the product. <strong>Signing happens on the next page</strong> after you choose Try free or open the signer. Your document stays on your device.</p>
+    <p><strong>First signature is free</strong>, then <strong>$1</strong> per extra slot in this browser. <strong>Signing</strong> opens on the next page. Your document stays on your device.</p>
     <p class="foot-pay">Stripe success URL should point to the signer with <code class="inline-code">?paid=1</code>, for example <code class="inline-code">app.html?paid=1</code>.</p>
   </footer>
   </main>
@@ -720,39 +651,20 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       var nav=document.getElementById('navCta');
       var h1=document.getElementById('heroCtaPrimary');
       var h2=document.getElementById('heroCtaSecondary');
-      var p1=document.getElementById('pricingCtaPrimary');
-      var p2=document.getElementById('pricingCtaSecondary');
       if(left>0){
         var firstFree = (done===0);
         var navTxt = firstFree ? 'Try free' : 'Open signer';
         var heroTxt = firstFree ? 'Try free' : 'Open signer';
-        var priceTxt = firstFree ? 'Open signer — try free' : 'Open signer';
         if(nav){ nav.href=freeUrl; nav.textContent=navTxt; }
         if(h1){ h1.href=freeUrl; h1.textContent=heroTxt; }
         if(h2){ h2.classList.remove('cta-hidden'); }
-        if(p1){ p1.href=freeUrl; p1.textContent=priceTxt; }
-        if(p2){ p2.classList.remove('cta-hidden'); }
       } else {
         if(nav){ nav.href=payUrl; nav.textContent='Unlock — $1'; }
         if(h1){ h1.href=payUrl; h1.textContent='Unlock signer — $1'; }
         if(h2){ h2.classList.add('cta-hidden'); }
-        if(p1){ p1.href=payUrl; p1.textContent='Unlock signer — $1'; }
-        if(p2){ p2.classList.add('cta-hidden'); }
       }
     }
     setCtas();
-
-    var el=document.getElementById('creditsStatus');
-    if(el){
-      el.classList.remove('is-ok','is-warn');
-      if(left===0){
-        el.classList.add('is-warn');
-        el.textContent='No free slot left in this browser. Use the blue button to unlock the signer for $1.';
-      } else {
-        el.classList.add('is-ok');
-        el.textContent=left+' signature slot'+(left===1?'':'s')+' available on the signer page.';
-      }
-    }
   })();
   </script>
 </body>
