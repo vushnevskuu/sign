@@ -433,7 +433,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
   outline: 2px solid var(--focus-blue); outline-offset: 2px;
 }
 
-/* Hero — Uber: white field, tight display type; vertically centered under nav */
+/* Hero — текст слева, демо-видео справа (на узких экранах колонка) */
 .site-header {
   text-align: center;
   width: 100%;
@@ -444,8 +444,15 @@ body.videoOverlayActive #buttonsRow { display: none; }
   border-bottom: none;
 }
 .site-header .site-header__inner {
-  max-width: 720px;
+  max-width: 1100px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+  align-items: center;
+}
+.hero-copy {
+  min-width: 0;
 }
 .site-header h1 {
   font-family: var(--font-display);
@@ -466,6 +473,28 @@ body.videoOverlayActive #buttonsRow { display: none; }
   font-family: var(--font-sans);
 }
 .badge-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+@media (min-width: 900px) {
+  .site-header {
+    text-align: left;
+  }
+  .site-header .site-header__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px);
+    gap: 40px 48px;
+  }
+  .site-header .lede {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 36rem;
+  }
+  .badge-row { justify-content: flex-start; }
+  .hero-cta-row { justify-content: flex-start; }
+  .hero-video-wrap {
+    margin: 0;
+    max-width: 100%;
+    justify-self: end;
+  }
+  .hero-video-caption { text-align: center; }
+}
 .badge {
   font-size: 12px;
   font-weight: 500;
@@ -486,8 +515,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
 }
 
 .hero-video-wrap {
-  margin: 28px auto 4px;
-  max-width: min(320px, 88vw);
+  margin: 8px auto 0;
+  max-width: min(300px, 88vw);
 }
 .hero-video {
   display: block;
@@ -674,6 +703,7 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   .payment-toast { transition: none; }
   #videoOverlay.tv-on { animation: none !important; clip-path: none !important; filter: none !important; }
   #videoOverlay .scanlines { animation: none !important; opacity: 0.08; }
+  .hero-video { animation: none; }
 }
 
   </style>
@@ -687,21 +717,23 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   <main class="page-main">
   <header class="site-header">
     <div class="site-header__inner">
+    <div class="hero-copy">
     <h1>Sign PDFs in the air with your webcam</h1>
     <p class="lede">Use hand tracking in the browser: draw your signature, confirm with gestures, drag it on the page, and export a PDF. Built for laptops with a camera (for example MacBook).</p>
     <div class="badge-row" role="list">
       <span class="badge badge--neutral" role="listitem">Webcam required</span>
       <span class="badge badge--brand" role="listitem">Private — camera stays in your browser</span>
     </div>
-    <figure class="hero-video-wrap">
-      <video class="hero-video" controls playsinline preload="metadata" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser">
-        <source src="media/demosign.mp4" type="video/mp4">
-      </video>
-      <figcaption class="hero-video-caption">Demo — in-browser hand tracking (no upload).</figcaption>
-    </figure>
     <div class="hero-cta-row">
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
     </div>
+    </div>
+    <figure class="hero-video-wrap">
+      <video class="hero-video" id="heroDemoVideo" autoplay muted loop playsinline controls preload="auto" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser (silent loop)">
+        <source src="media/demosign.mp4" type="video/mp4">
+      </video>
+      <figcaption class="hero-video-caption">Silent loop demo — in-browser hand tracking (no upload).</figcaption>
+    </figure>
     </div>
   </header>
   </main>
@@ -726,6 +758,14 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
       }
     }
     setCtas();
+  })();
+  (function(){
+    var v = document.getElementById('heroDemoVideo');
+    if (!v) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      v.removeAttribute('autoplay');
+      v.pause();
+    }
   })();
   </script>
 </body>
