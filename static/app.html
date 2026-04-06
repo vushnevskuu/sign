@@ -323,32 +323,19 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   margin-top: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#buttonsRowInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
 }
 
-#addDocBtn {
-  background: var(--white);
-  color: var(--text);
-  border: 1px solid var(--black);
-  padding: 12px 20px;
-  border-radius: 999px;
-  font-size: 15px;
-  font-weight: 500;
-  font-family: var(--font-sans);
-  cursor: pointer;
-  box-shadow: var(--shadow-float);
-  transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
-}
-#addDocBtn:hover {
-  background: var(--hover-gray);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-deep);
-}
-#addDocBtn:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
-
-#exportBtn, #docSignBtn {
+#addDocBtn, #exportBtn {
   background: var(--brand);
   color: var(--white);
   border: 1px solid transparent;
@@ -361,18 +348,16 @@ p { color: var(--gray-500); margin-bottom: 10px; text-align: center; max-width: 
   box-shadow: var(--shadow-card), var(--shadow-brand-halo);
   transition: background 0.15s, transform 0.12s, box-shadow 0.15s;
 }
-#exportBtn:hover, #docSignBtn:hover {
+#addDocBtn:hover, #exportBtn:hover {
   background: var(--brand-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-deep), 0 12px 36px rgba(0, 56, 233, 0.2);
 }
-#exportBtn:focus-visible, #docSignBtn:focus-visible {
+#addDocBtn:focus-visible, #exportBtn:focus-visible {
   outline: 2px solid var(--focus-blue);
   outline-offset: 2px;
 }
 #exportBtn.hidden { display: none; }
-#rightButtons { display: flex; align-items: center; gap: 8px; }
-#docSignBtn.hidden { display: none; }
 
 #signatureContainer {
   position: absolute; right: 8%; bottom: 10%; width: 42%; min-height: 48px;
@@ -720,14 +705,12 @@ body.videoOverlayActive #buttonsRow { display: none; }
     flex-direction: column;
     align-items: stretch;
   }
-  #rightButtons {
+  #buttonsRowInner {
     width: 100%;
-    justify-content: stretch;
     flex-direction: column;
-    gap: 10px;
+    align-items: stretch;
   }
   #addDocBtn,
-  #docSignBtn,
   #exportBtn {
     width: 100%;
     text-align: center;
@@ -786,10 +769,9 @@ body.videoOverlayActive #buttonsRow { display: none; }
       <div id="status">Loading...</div>
       <input type="file" id="addDocInput" accept=".pdf,image/*,application/pdf" style="display:none">
       <div id="buttonsRow">
-        <button id="addDocBtn">Add your own document</button>
-        <div id="rightButtons">
-          <button id="docSignBtn">Sign</button>
-          <button id="exportBtn" class="hidden">Export</button>
+        <div id="buttonsRowInner">
+          <button type="button" id="addDocBtn">Add your own document</button>
+          <button type="button" id="exportBtn" class="hidden">Export</button>
         </div>
       </div>
     </div>
@@ -893,9 +875,12 @@ body.videoOverlayActive #buttonsRow { display: none; }
       updateCreditsStatus();
     }
 
+    /** true: primary button opens file picker ("Add your own document"); false: starts Sign / paywall */
+    let docPrimaryIsFileMode = true;
+
     function refreshSignButton() {
-      const btn = document.getElementById('docSignBtn');
-      if (!btn || btn.classList.contains('hidden')) return;
+      const btn = document.getElementById('addDocBtn');
+      if (!btn || docPrimaryIsFileMode) return;
       if (canStartSignature()) {
         btn.textContent = 'Sign';
         btn.removeAttribute('aria-describedby');
@@ -1126,7 +1111,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
     const signPreviewCanvas = document.getElementById('signPreviewCanvas');
     const resignBtn = document.getElementById('resignBtn');
     const signConfirmBtn = document.getElementById('signConfirmBtn');
-    const docSignBtn = document.getElementById('docSignBtn');
     const docScreen = document.getElementById('docScreen');
     const docSheet = document.getElementById('docSheet');
     const docSheetWrapper = document.getElementById('docSheetWrapper');
@@ -1252,7 +1236,24 @@ body.videoOverlayActive #buttonsRow { display: none; }
     const addDocBtn = document.getElementById('addDocBtn');
     const addDocInput = document.getElementById('addDocInput');
 
-    addDocBtn.onclick = () => addDocInput.click();
+    addDocBtn.onclick = () => {
+      if (docPrimaryIsFileMode) {
+        addDocInput.click();
+        return;
+      }
+      if (!canStartSignature()) {
+        openPaywall();
+        return;
+      }
+      { const d = document.getElementById('docStatus'); d.textContent = ''; d.classList.remove('doc-status--error'); }
+      videoOverlay.classList.add('visible', 'tv-on');
+      document.body.classList.add('videoOverlayActive');
+      document.body.appendChild(status);
+      requestAnimationFrame(() => updateStatusPosition());
+      window.addEventListener('resize', updateStatusPosition);
+      setTimeout(() => videoOverlay.classList.remove('tv-on'), 900);
+      if (!handLandmarker) init();
+    };
 
     const exportBtn = document.getElementById('exportBtn');
     exportBtn.onclick = async () => {
@@ -1289,8 +1290,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
       signatureContainer.innerHTML = '';
       signatureContainer.classList.remove('has-signature');
       signatureContainer.classList.add('hidden');
-      docSignBtn.classList.remove('hidden');
       exportBtn.classList.add('hidden');
+      docPrimaryIsFileMode = true;
       addDocBtn.textContent = 'Add your own document';
       updateCreditsStatus();
     }
@@ -1339,6 +1340,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
             ctx.drawImage(img, 0, 0, w, h);
             updateDocSheetAspectRatio();
             { const d = document.getElementById('docStatus'); d.textContent = ''; d.classList.remove('doc-status--error'); }
+            docPrimaryIsFileMode = false;
+            refreshSignButton();
           };
           img.onerror = () => {
             URL.revokeObjectURL(url);
@@ -1349,6 +1352,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
           img.src = url;
           return;
         }
+        docPrimaryIsFileMode = false;
+        refreshSignButton();
         { const d = document.getElementById('docStatus'); d.textContent = ''; d.classList.remove('doc-status--error'); }
       } catch (err) {
         console.error('Load error:', err);
@@ -1356,21 +1361,6 @@ body.videoOverlayActive #buttonsRow { display: none; }
         _ds3.textContent = 'Load error: ' + (err.message || err);
         _ds3.classList.add('doc-status--error');
       }
-    };
-
-    docSignBtn.onclick = () => {
-      if (!canStartSignature()) {
-        openPaywall();
-        return;
-      }
-      { const d = document.getElementById('docStatus'); d.textContent = ''; d.classList.remove('doc-status--error'); }
-      videoOverlay.classList.add('visible', 'tv-on');
-      document.body.classList.add('videoOverlayActive');
-      document.body.appendChild(status);
-      requestAnimationFrame(() => updateStatusPosition());
-      window.addEventListener('resize', updateStatusPosition);
-      setTimeout(() => videoOverlay.classList.remove('tv-on'), 900);
-      if (!handLandmarker) init();
     };
 
     function showSignModal() {
@@ -1573,8 +1563,8 @@ body.videoOverlayActive #buttonsRow { display: none; }
       const dataUrl = drawCanvas.toDataURL('image/png');
       const strokes = [...strokeRecording];
       const srcW = drawCanvas.width, srcH = drawCanvas.height;
-      docSignBtn.classList.add('hidden');
       exportBtn.classList.remove('hidden');
+      docPrimaryIsFileMode = true;
       addDocBtn.textContent = 'Add another one';
       videoOverlay.classList.remove('visible');
       document.body.classList.remove('videoOverlayActive');
