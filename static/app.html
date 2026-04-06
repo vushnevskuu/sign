@@ -871,6 +871,9 @@ body.videoOverlayActive #buttonsRow { display: none; }
     /** Paste your Stripe Payment Link (https://buy.stripe.com/...). Leave empty until it is ready. Success URL must redirect back with ?paid=1 */
     const STRIPE_PAYMENT_LINK = '';
 
+    /** Set to `false` to re-enable the $1 paywall after free slots are used. */
+    const PAYWALL_DISABLED = true;
+
     const STORAGE_PAID = 'airsign_paid_credits';
     const STORAGE_DONE = 'airsign_signatures_done';
 
@@ -909,6 +912,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       return false;
     }
     function canStartSignature() {
+      if (PAYWALL_DISABLED) return true;
       return readDone() < allowance();
     }
     function recordSignatureCompleted() {
@@ -1002,6 +1006,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
     }
 
     function openPaywall() {
+      if (PAYWALL_DISABLED) return;
       syncPaywallUi();
       paywallPreviousFocus = document.activeElement;
       paywallModal.classList.add('visible');
