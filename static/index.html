@@ -11,11 +11,23 @@
   <meta property="og:title" content="Air Sign — Webcam PDF signatures in the browser">
   <meta property="og:description" content="Draw your signature in the air, place it on a PDF, export. Hand tracking runs locally in your browser.">
   <meta property="og:url" content="https://vushnevskuu.github.io/sign/">
+  <meta property="og:image" content="https://vushnevskuu.github.io/sign/media/demosign-poster.jpg">
+  <meta property="og:image:alt" content="Air Sign demo: webcam hand-tracking signature in the browser">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Air Sign — Webcam PDF signatures">
   <meta name="twitter:description" content="Sign PDFs with hand tracking in the browser. Private; first signature free.">
+  <meta name="twitter:image" content="https://vushnevskuu.github.io/sign/media/demosign-poster.jpg">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"WebApplication","name":"Air Sign","url":"https://vushnevskuu.github.io/sign/","applicationCategory":"BusinessApplication","operatingSystem":"Any (browser)","author":{"@type":"Person","name":"Alexey Vishnevsky","sameAs":["https://www.linkedin.com/in/vushnevskuu"]},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures in the browser. Requires a camera and a modern browser."}
+  {"@context":"https://schema.org","@graph":[
+    {"@type":"WebSite","@id":"https://vushnevskuu.github.io/sign/#website","url":"https://vushnevskuu.github.io/sign/","name":"Air Sign","description":"Sign PDFs in the browser with webcam hand tracking. Client-side processing until export.","publisher":{"@id":"https://vushnevskuu.github.io/sign/#creator"},"inLanguage":"en"},
+    {"@type":"WebApplication","name":"Air Sign","url":"https://vushnevskuu.github.io/sign/","applicationCategory":"BusinessApplication","operatingSystem":"Any (modern browser)","browserRequirements":"Requires JavaScript and camera access for air signing.","author":{"@id":"https://vushnevskuu.github.io/sign/#creator"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures in the browser. Processing stays on your device until you export."},
+    {"@type":"Person","@id":"https://vushnevskuu.github.io/sign/#creator","name":"Alexey Vishnevsky","url":"https://www.linkedin.com/in/vushnevskuu","sameAs":["https://github.com/vushnevskuu","https://www.linkedin.com/in/vushnevskuu"]},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"Does Air Sign upload my PDF to a server?","acceptedAnswer":{"@type":"Answer","text":"Signing runs in your browser. Your file is not sent to our servers for the signing step; you export when you are ready."}},
+      {"@type":"Question","name":"Do I need a webcam?","acceptedAnswer":{"@type":"Answer","text":"The air-signature flow needs a camera. Without it, use another signing method."}},
+      {"@type":"Question","name":"Who built Air Sign?","acceptedAnswer":{"@type":"Answer","text":"Alexey Vishnevsky. Source code and updates are on GitHub (vushnevskuu/sign)."}}
+    ]}
+  ]}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

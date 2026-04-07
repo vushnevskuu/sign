@@ -1,7 +1,8 @@
 {
-  "name": "hand-tool-hvat",
+  "name": "air-sign",
   "version": "1.0.0",
   "private": true,
+  "description": "Air Sign — sign PDFs in the browser with webcam hand tracking; client-side until export.",
   "scripts": {
     "start": "npx serve static -p 3000",
     "build": "rm -rf public && mkdir -p public && cp -R static/. public/"

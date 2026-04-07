@@ -1,8 +1,39 @@
-# Отслеживание пальца через камеру
+# Air Sign
 
-Программа отслеживает один палец на руке через веб-камеру (MediaPipe Hands).
+**Sign PDFs and images in your browser using your webcam.** Hand tracking runs locally: your document stays on your device until you **export**. First signature free; optional paid slots in the app.
 
-## Запуск
+**[Try Air Sign →](https://vushnevskuu.github.io/sign/app.html)** · **[Live site](https://vushnevskuu.github.io/sign/)** · **Author:** [Alexey Vishnevsky](https://www.linkedin.com/in/vushnevskuu)
+
+---
+
+## Why Air Sign
+
+- **Privacy-first flow** — signing happens in the browser; we’re not taking your PDF to a server to apply the signature.
+- **No install** for the web app — modern browser + webcam.
+- **Gesture UX** — draw in the air, confirm, drag the signature, download.
+
+Air Sign is **not** a full enterprise e-signature platform (audit trails, legal compliance packages). It’s built for quick, local-first signing and for developers curious about hand tracking + PDFs.
+
+---
+
+## Quick start (web)
+
+Open **[the app](https://vushnevskuu.github.io/sign/app.html)** or clone and run locally:
+
+```bash
+git clone https://github.com/vushnevskuu/sign.git
+cd sign
+npm install
+npm start
+```
+
+Then open http://localhost:3000/app.html and allow camera access.
+
+---
+
+## Python finger tracker (desktop demo)
+
+Tracks one finger via webcam (MediaPipe Hands). Useful for local experiments; the **recommended** flow for most users is the browser app above.
 
 ```bash
 python3 -m venv venv
@@ -11,57 +42,56 @@ pip install -r requirements-python.txt
 python finger_tracker.py
 ```
 
-## Управление
+| Key | Action |
+|-----|--------|
+| **Q** | Quit |
+| **C** | Clear canvas (desktop) |
 
-- **Q** — выход
-- **C** — очистить холст (десктоп)
-- Покажите руку — жёлтая точка на кончике указательного пальца
-- **Направьте палец в камеру** — точка станет зелёной, начнётся рисование
+### CLI options
 
-## Аргументы командной строки
+| Flag | Description |
+|------|-------------|
+| `-f`, `--finger` | Landmark id: 4, 8, 12, 16, 20 (default **8** — index) |
+| `-s`, `--smooth` | Smoothing window (default 5; `0` = off) |
+| `-r`, `--record` | Record trajectory to file |
+| `-c`, `--camera` | Camera index (default 0) |
 
-| Параметр | Описание |
-|----------|----------|
-| `-f`, `--finger` | Палец: 4, 8, 12, 16, 20 (по умолчанию 8 — указательный) |
-| `-s`, `--smooth` | Сглаживание: N кадров (по умолчанию 5, 0 = выкл) |
-| `-r`, `--record` | Запись траектории в файл (x,y по строкам) |
-| `-c`, `--camera` | Индекс камеры (по умолчанию 0) |
+### MediaPipe model
 
-## Примеры
+`hand_landmarker.task` should sit next to the script. If missing:
 
 ```bash
-# Указательный палец, сглаживание 10 кадров
-python finger_tracker.py -f 8 -s 10
-
-# Средний палец, запись траектории
-python finger_tracker.py -f 12 -r trajectory.csv
-
-# Без сглаживания
-python finger_tracker.py -s 0
+curl -sL "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task" -o hand_landmarker.task
 ```
 
-## Веб-версия (рекомендуется)
-
-**Камера в браузере** — не нужен доступ сервера к камере:
+### Local web server (camera in browser)
 
 ```bash
 python serve.py
 ```
 
-Откройте http://localhost:8765. Разрешите доступ к камере. Направьте палец в камеру — начнётся рисование.
+Open http://localhost:8765 — camera access is in the **browser**, not on the server.
 
 ---
 
-Альтернатива (камера на сервере, может не работать):
+## Deploy
 
-```bash
-python finger_tracker_server.py
-```
+- **GitHub Pages:** `static/` is the source; `npm run build` copies to `public/` for Vercel (see `vercel.json`).
 
-## Модель MediaPipe
+---
 
-Файл `hand_landmarker.task` должен лежать рядом со скриптом. Если его нет:
+## Marketing & positioning
 
-```bash
-curl -sL "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task" -o hand_landmarker.task
-```
+Product and SEO context for humans and AI agents lives in:
+
+- **[`.agents/product-marketing-context.md`](.agents/product-marketing-context.md)** — positioning, ICP, objections (template from [Marketing Skills](https://github.com/coreyhaines31/marketingskills))
+- **[`marketing/`](marketing/)** — keywords, messaging, GitHub About text, content ideas
+
+---
+
+## На русском
+
+**Air Sign** — подпись PDF (и изображений) в браузере с помощью веб-камеры и отслеживания руки. Обработка идёт у тебя в браузере; файл не нужно загружать на сервер **для самого процесса подписи** — ты экспортируешь результат, когда готов.
+
+- **Демо в браузере:** https://vushnevskuu.github.io/sign/app.html  
+- **Маркетинг и SEO-заметки:** папка [`marketing/`](marketing/)
