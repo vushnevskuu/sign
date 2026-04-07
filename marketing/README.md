@@ -13,8 +13,8 @@
 
 ## Быстрые ссылки продукта
 
-- Сайт: https://sign-pink-one.vercel.app/
-- Приложение: https://sign-pink-one.vercel.app/app.html
+- Сайт: https://sign-jade-two.vercel.app/
+- Приложение: https://sign-jade-two.vercel.app/app.html
 - Репозиторий: https://github.com/vushnevskuu/sign
 
 ## Как ставить skills marketingskills в проект (опционально)

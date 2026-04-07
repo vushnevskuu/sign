@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sign-pink-one.vercel.app/sitemap.xml
+Sitemap: https://sign-jade-two.vercel.app/sitemap.xml

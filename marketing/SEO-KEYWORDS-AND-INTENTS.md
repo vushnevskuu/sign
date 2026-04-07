@@ -66,7 +66,7 @@
 
 - [x] Canonical на `index.html` и `app.html`
 - [x] `WebApplication` JSON-LD
-- [ ] **Google Search Console** — основной префикс: `https://sign-pink-one.vercel.app` (и опционально зеркало `https://vushnevskuu.github.io/sign/`)
+- [ ] **Google Search Console** — основной префикс: `https://sign-jade-two.vercel.app` (и опционально зеркало `https://vushnevskuu.github.io/sign/`)
 - [x] `sitemap.xml` / `robots.txt` (абсолютные URL на Vercel)
 - [ ] `robots.txt` разрешающий индексацию публичных путей
 - [ ] Стабильный **og:image** (абсолютный URL постера демо)

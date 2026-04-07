@@ -34,7 +34,7 @@
 
 ## LinkedIn (личный профиль — About / Featured)
 
-**Featured link:** https://sign-pink-one.vercel.app/  
+**Featured link:** https://sign-jade-two.vercel.app/  
 **Текст:**  
 «Собрал Air Sign: подпись PDF через hand tracking в браузере, приватно до экспорта. Открытый код на GitHub → [ссылка на repo].»
 
