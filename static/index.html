@@ -21,21 +21,7 @@
   {"@context":"https://schema.org","@graph":[
     {"@type":"WebSite","@id":"https://sign-pink-one.vercel.app/#website","url":"https://sign-pink-one.vercel.app/","name":"Air Sign","description":"Sign PDFs in the browser with webcam hand tracking. Client-side processing until export.","publisher":{"@id":"https://sign-pink-one.vercel.app/#creator"},"inLanguage":"en"},
     {"@type":"WebApplication","name":"Air Sign","url":"https://sign-pink-one.vercel.app/","applicationCategory":"BusinessApplication","operatingSystem":"Any (modern browser)","browserRequirements":"Requires JavaScript and camera access for air signing.","author":{"@id":"https://sign-pink-one.vercel.app/#creator"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"First signature free"},"description":"Sign PDFs using a webcam and hand gestures in the browser. Processing stays on your device until you export."},
-    {"@type":"Person","@id":"https://sign-pink-one.vercel.app/#creator","name":"Alexey Vishnevsky","url":"https://www.linkedin.com/in/vushnevskuu","sameAs":["https://github.com/vushnevskuu","https://www.linkedin.com/in/vushnevskuu"]},
-    {"@type":"FAQPage","mainEntity":[
-      {"@type":"Question","name":"How can I sign a PDF without uploading my file to a website?","acceptedAnswer":{"@type":"Answer","text":"Choose a signer that runs entirely in your browser so the PDF is not sent to a company server just to apply a signature. Air Sign works on your device: open the file, draw your signature in the air with your webcam, place it on the page, and export when you are ready."}},
-      {"@type":"Question","name":"Is there a free way to sign a PDF online in my browser?","acceptedAnswer":{"@type":"Answer","text":"Many tools offer a free trial or free tier. Air Sign lets you complete your first signature free in the browser; optional paid slots may apply for additional signatures."}},
-      {"@type":"Question","name":"How do I add a handwritten signature to a PDF using my webcam?","acceptedAnswer":{"@type":"Answer","text":"Air Sign uses hand tracking. You draw in the air in front of the camera, confirm with a gesture, drag the signature onto the PDF or image, then export. You need a modern browser and a webcam."}},
-      {"@type":"Question","name":"Where does my PDF go when I use an online PDF signer?","acceptedAnswer":{"@type":"Answer","text":"It depends on the product. Some services upload your file to the cloud. With Air Sign, the signing step runs in your browser on your machine; you download the signed file when you choose. Always read each provider privacy policy."}},
-      {"@type":"Question","name":"Can I sign a PDF without creating an account?","acceptedAnswer":{"@type":"Answer","text":"You can try Air Sign without an account: open the app in your browser, allow camera access, load your document, sign, and export."}},
-      {"@type":"Question","name":"Are electronic signatures on PDFs legally binding?","acceptedAnswer":{"@type":"Answer","text":"Laws vary by country and document type. Many routine agreements accept electronic signatures, but regulated contracts may need specific platforms or workflows. Air Sign does not provide legal advice; consult a professional when in doubt."}},
-      {"@type":"Question","name":"Can I sign an image or only a PDF?","acceptedAnswer":{"@type":"Answer","text":"Air Sign accepts PDFs and common image formats from your file picker, so scanned pages work when opened as a supported file type."}},
-      {"@type":"Question","name":"What if I do not have a webcam?","acceptedAnswer":{"@type":"Answer","text":"The air-signature flow requires a camera. Without one, use typing, a signature image, or another desktop tool. Air Sign is built around webcam hand tracking."}},
-      {"@type":"Question","name":"How do I download my signed PDF?","acceptedAnswer":{"@type":"Answer","text":"In Air Sign, after you place the signature, use Export to save a PDF to your device."}},
-      {"@type":"Question","name":"What is the difference between drawing a signature and typing my name?","acceptedAnswer":{"@type":"Answer","text":"Typed signatures often use a font. Air Sign records a gesture-drawn stroke via your webcam so you place a drawn-style signature on the document."}},
-      {"@type":"Question","name":"Does Air Sign upload my PDF to a server?","acceptedAnswer":{"@type":"Answer","text":"Signing runs in your browser. Your file is not sent to our servers for the signing step; you export when you are ready."}},
-      {"@type":"Question","name":"Who built Air Sign?","acceptedAnswer":{"@type":"Answer","text":"Alexey Vishnevsky. Source code is on GitHub at github.com/vushnevskuu/sign."}}
-    ]}
+    {"@type":"Person","@id":"https://sign-pink-one.vercel.app/#creator","name":"Alexey Vishnevsky","url":"https://www.linkedin.com/in/vushnevskuu","sameAs":["https://github.com/vushnevskuu","https://www.linkedin.com/in/vushnevskuu"]}
   ]}
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -783,97 +769,25 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
   border-radius: var(--radius-key);
 }
 
-/* FAQ — search-intent questions, English */
-.faq-section {
-  width: 100%;
-  max-width: var(--page-max);
-  margin: 0 auto;
-  padding: 12px var(--page-pad-x) 40px;
-  box-sizing: border-box;
-}
-.faq-section__inner {
-  max-width: 38rem;
-  margin: 0 auto;
-}
-.faq-section h2 {
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 3.2vw, 1.7rem);
-  font-weight: 400;
-  letter-spacing: 0.03em;
-  color: var(--text);
-  margin: 0 0 10px;
-  text-align: center;
-}
-.faq-section__intro {
-  text-align: center;
-  color: var(--body-gray);
-  font-size: 15px;
-  margin: 0 0 24px;
-  line-height: 1.5;
-  padding: 0 4px;
-}
-.faq-list {
+.site-global-footer__links {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
 }
-.faq-item {
-  border: var(--border-hair);
+.site-global-footer .footer-link--quiet {
+  text-decoration: none;
+  font-weight: 600;
+  border: var(--border-quiet);
+  padding: 6px 12px;
   border-radius: var(--radius-key);
   background: var(--paper-bright);
-}
-.faq-item summary {
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 14px 40px 14px 16px;
-  list-style: none;
-  position: relative;
-  color: var(--text);
-  line-height: 1.35;
-}
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after {
-  content: '+';
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-weight: 400;
-  font-size: 18px;
-  color: var(--muted-gray);
-}
-.faq-item[open] summary::after { content: '−'; }
-.faq-item[open] summary {
-  border-bottom: var(--border-whisper);
-}
-.faq-item__body {
-  padding: 12px 16px 16px;
-  font-size: 15px;
   color: var(--body-gray);
-  line-height: 1.55;
 }
-.faq-item__body p { margin: 0 0 10px; text-align: left; max-width: none; color: inherit; }
-.faq-item__body p:last-child { margin-bottom: 0; }
-.faq-item__body a {
+.site-global-footer .footer-link--quiet:hover {
+  background: var(--chip-gray);
   color: var(--text);
-  font-weight: 600;
-  text-underline-offset: 3px;
-}
-.faq-item__body a:hover { color: var(--black); }
-.hero-faq-link {
-  display: inline-block;
-  margin-top: 14px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--body-gray);
-  text-underline-offset: 3px;
-}
-.hero-faq-link:hover { color: var(--text); }
-.hero-faq-link:focus-visible {
-  outline: 2px solid var(--focus-blue);
-  outline-offset: 3px;
-  border-radius: var(--radius-key);
 }
 
   </style>
@@ -896,7 +810,6 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     <div class="hero-cta-row">
       <a class="btn-pricing hero-cta-link" id="heroCtaPrimary" href="app.html">Try free</a>
     </div>
-    <a class="hero-faq-link" href="#faq">Common questions about signing PDFs online</a>
     </div>
     <figure class="hero-video-wrap" aria-label="Product demo video">
       <video class="hero-video" id="heroDemoVideo" autoplay muted loop playsinline controls preload="auto" poster="media/demosign-poster.jpg" width="640" height="1002" aria-label="Demo: signing in the air with hand tracking in the browser (silent, looping)">
@@ -906,99 +819,12 @@ a.hero-cta-link { text-decoration: none; display: inline-block; }
     </div>
   </header>
 
-  <section class="faq-section" id="faq" aria-labelledby="faq-heading">
-    <div class="faq-section__inner">
-      <h2 id="faq-heading">Common questions</h2>
-      <p class="faq-section__intro">People often search for ways to sign PDFs privately, for free, or without an account. Short answers below; when Air Sign fits, we link to the <a href="app.html">browser signer</a>.</p>
-      <div class="faq-list">
-        <details class="faq-item">
-          <summary>How can I sign a PDF without uploading my file to a website?</summary>
-          <div class="faq-item__body">
-            <p>Choose a signer that runs entirely in your browser so the PDF is not sent to a company server just to apply a signature. <strong>Air Sign</strong> works on your device: open the file, draw your signature in the air with your webcam, place it on the page, and export when you are ready.</p>
-            <p><a href="app.html">Open Air Sign</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Is there a free way to sign a PDF online in my browser?</summary>
-          <div class="faq-item__body">
-            <p>Many tools offer a free trial or free tier. <strong>Air Sign</strong> lets you complete your first signature free in the browser; optional paid slots may apply for additional signatures.</p>
-            <p><a href="app.html">Try Air Sign</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>How do I add a handwritten signature to a PDF using my webcam?</summary>
-          <div class="faq-item__body">
-            <p><strong>Air Sign</strong> uses hand tracking. You draw in the air in front of the camera, confirm with a gesture, drag the signature onto the PDF or image, then export. You need a modern browser and a webcam.</p>
-            <p><a href="app.html">Start signing</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Where does my PDF go when I use an online PDF signer?</summary>
-          <div class="faq-item__body">
-            <p>It depends on the product. Some services upload your file to the cloud. With <strong>Air Sign</strong>, the signing step runs in your browser on your machine; you download the signed file when you choose. Always read each provider’s privacy policy.</p>
-            <p><a href="app.html">Use Air Sign in the browser</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Can I sign a PDF without creating an account?</summary>
-          <div class="faq-item__body">
-            <p>You can try <strong>Air Sign</strong> without an account: open the app in your browser, allow camera access, load your document, sign, and export.</p>
-            <p><a href="app.html">Open the app</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Are electronic signatures on PDFs legally binding?</summary>
-          <div class="faq-item__body">
-            <p>Laws vary by country and document type. Many routine agreements accept electronic signatures, but regulated contracts may need specific platforms or workflows. <strong>Air Sign</strong> does not provide legal advice; consult a professional when in doubt.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Can I sign an image or only a PDF?</summary>
-          <div class="faq-item__body">
-            <p><strong>Air Sign</strong> accepts PDFs and common image formats from your file picker, so scanned pages work when opened as a supported file type.</p>
-            <p><a href="app.html">Add your document</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>What if I do not have a webcam?</summary>
-          <div class="faq-item__body">
-            <p>The air-signature flow requires a camera. Without one, use typing, a signature image, or another desktop tool. <strong>Air Sign</strong> is built around webcam hand tracking.</p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>How do I download my signed PDF?</summary>
-          <div class="faq-item__body">
-            <p>In <strong>Air Sign</strong>, after you place the signature, use <strong>Export</strong> to save a PDF to your device.</p>
-            <p><a href="app.html">Go to the signer</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>What is the difference between drawing a signature and typing my name?</summary>
-          <div class="faq-item__body">
-            <p>Typed signatures often use a font. <strong>Air Sign</strong> records a gesture-drawn stroke via your webcam so you place a drawn-style signature on the document.</p>
-            <p><a href="app.html">Try drawing in the air</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Does Air Sign upload my PDF to a server?</summary>
-          <div class="faq-item__body">
-            <p>Signing runs in your browser. Your file is not sent to our servers for the signing step; you export when you are ready.</p>
-            <p><a href="app.html">Open Air Sign</a></p>
-          </div>
-        </details>
-        <details class="faq-item">
-          <summary>Who built Air Sign?</summary>
-          <div class="faq-item__body">
-            <p><a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">Alexey Vishnevsky</a>. Source code: <a href="https://github.com/vushnevskuu/sign" target="_blank" rel="noopener noreferrer">github.com/vushnevskuu/sign</a>.</p>
-          </div>
-        </details>
-      </div>
-    </div>
-  </section>
-
   </main>
   <footer class="site-global-footer" role="contentinfo">
-    <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">by Alexey Vishnevsky</a>
+    <div class="site-global-footer__links">
+      <a class="footer-link--quiet" href="faq.html">FAQ</a>
+      <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">Alexey Vishnevsky</a>
+    </div>
   </footer>
 
   <script>

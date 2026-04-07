@@ -842,6 +842,26 @@ body.videoOverlayActive #buttonsRow { display: none; }
   outline-offset: 3px;
   border-radius: var(--radius-key);
 }
+.site-global-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 14px;
+}
+.site-global-footer .footer-link--quiet {
+  text-decoration: none;
+  font-weight: 600;
+  border: var(--border-quiet);
+  padding: 6px 12px;
+  border-radius: var(--radius-key);
+  background: var(--paper-bright);
+  color: var(--body-gray);
+}
+.site-global-footer .footer-link--quiet:hover {
+  background: var(--chip-gray);
+  color: var(--text);
+}
 
   </style>
 </head>
@@ -872,7 +892,10 @@ body.videoOverlayActive #buttonsRow { display: none; }
   </section>
   </main>
   <footer class="site-global-footer" role="contentinfo">
-    <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">by Alexey Vishnevsky</a>
+    <div class="site-global-footer__links">
+      <a class="footer-link--quiet" href="faq.html">FAQ</a>
+      <a href="https://www.linkedin.com/in/vushnevskuu" target="_blank" rel="noopener noreferrer">Alexey Vishnevsky</a>
+    </div>
   </footer>
 
   <div id="paymentToast" class="payment-toast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
