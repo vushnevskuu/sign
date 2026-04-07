@@ -51,7 +51,7 @@
   --warm-dark: var(--text);
   --gray-500: var(--body-gray);
   --gray-300: var(--muted-gray);
-  --signature-blue: #2c3a52;
+  --signature-blue: #0038e9;
   --notion-blue: var(--signature-blue);
   --active-blue: var(--brand-hover);
   --focus-blue: var(--brand-focus);
@@ -1589,7 +1589,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
       signatureContainer.appendChild(animCanvas);
       const aCtx = animCanvas.getContext('2d');
       aCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      aCtx.strokeStyle = '#2c3a52';
+      aCtx.strokeStyle = '#0038e9';
       aCtx.lineWidth = Math.max(3, 5 * scale);
       aCtx.lineCap = 'round';
       aCtx.lineJoin = 'round';
@@ -2001,7 +2001,7 @@ body.videoOverlayActive #buttonsRow { display: none; }
                 const cpx = (lastPoint.x + sx) / 2;
                 const cpy = (lastPoint.y + sy) / 2;
                 strokeRecording.push({ from: { x: lastPoint.x, y: lastPoint.y }, ctrl: { x: cpx, y: cpy }, to: { x: sx, y: sy } });
-                drawCtx.strokeStyle = '#2c3a52';
+                drawCtx.strokeStyle = '#0038e9';
                 drawCtx.lineWidth = 5;
                 drawCtx.lineCap = 'round';
                 drawCtx.lineJoin = 'round';
