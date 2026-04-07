@@ -4,3 +4,4 @@ __pycache__/
 hand_landmarker.task
 .vercel
 public/
+.cursor/
