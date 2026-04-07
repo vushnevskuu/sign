@@ -2,7 +2,9 @@
 
 **Sign PDFs and images in your browser using your webcam.** Hand tracking runs locally: your document stays on your device until you **export**. First signature free; optional paid slots in the app.
 
-**[Try Air Sign →](https://vushnevskuu.github.io/sign/app.html)** · **[Live site](https://vushnevskuu.github.io/sign/)** · **Author:** [Alexey Vishnevsky](https://www.linkedin.com/in/vushnevskuu)
+**[Try Air Sign →](https://sign-pink-one.vercel.app/app.html)** · **[Live site](https://sign-pink-one.vercel.app/)** · **Author:** [Alexey Vishnevsky](https://www.linkedin.com/in/vushnevskuu)
+
+*Canonical URLs (SEO) point here.* **Mirror:** [GitHub Pages](https://vushnevskuu.github.io/sign/) — same build if Pages is enabled.
 
 ---
 
@@ -18,7 +20,7 @@ Air Sign is **not** a full enterprise e-signature platform (audit trails, legal 
 
 ## Quick start (web)
 
-Open **[the app](https://vushnevskuu.github.io/sign/app.html)** or clone and run locally:
+Open **[the app](https://sign-pink-one.vercel.app/app.html)** or clone and run locally:
 
 ```bash
 git clone https://github.com/vushnevskuu/sign.git
@@ -93,5 +95,5 @@ Product and SEO context for humans and AI agents lives in:
 
 **Air Sign** — подпись PDF (и изображений) в браузере с помощью веб-камеры и отслеживания руки. Обработка идёт у тебя в браузере; файл не нужно загружать на сервер **для самого процесса подписи** — ты экспортируешь результат, когда готов.
 
-- **Демо в браузере:** https://vushnevskuu.github.io/sign/app.html  
+- **Демо в браузере:** https://sign-pink-one.vercel.app/app.html  
 - **Маркетинг и SEO-заметки:** папка [`marketing/`](marketing/)

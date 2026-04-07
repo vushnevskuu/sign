@@ -160,7 +160,7 @@
 
 ## Primary URLs & Creator (for consistency across SEO and schema)
 
-- **Live app:** https://vushnevskuu.github.io/sign/
-- **Signer:** https://vushnevskuu.github.io/sign/app.html
+- **Live app:** https://sign-pink-one.vercel.app/
+- **Signer:** https://sign-pink-one.vercel.app/app.html
 - **Repository:** https://github.com/vushnevskuu/sign
 - **Creator:** Alexey Vishnevsky — https://www.linkedin.com/in/vushnevskuu

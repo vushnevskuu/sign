@@ -34,7 +34,7 @@
 
 ## LinkedIn (личный профиль — About / Featured)
 
-**Featured link:** https://vushnevskuu.github.io/sign/  
+**Featured link:** https://sign-pink-one.vercel.app/  
 **Текст:**  
 «Собрал Air Sign: подпись PDF через hand tracking в браузере, приватно до экспорта. Открытый код на GitHub → [ссылка на repo].»
 

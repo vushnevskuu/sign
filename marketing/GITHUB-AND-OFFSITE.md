@@ -7,7 +7,7 @@
 - **Description:**  
   `Air Sign — sign PDFs in the browser with webcam hand tracking. Client-side; export when you choose.`
 - **Website:**  
-  `https://vushnevskuu.github.io/sign/`
+  `https://sign-pink-one.vercel.app/`
 - **Topics (теги):**  
   `pdf` `signature` `webcam` `hand-tracking` `mediapipe` `pdf-js` `browser` `privacy` `e-signature` `javascript` `static-site` `github-pages`
 
@@ -40,7 +40,7 @@
 ## Копирайт питча для каталогов (копипаст)
 
 **Name:** Air Sign  
-**URL:** https://vushnevskuu.github.io/sign/  
+**URL:** https://sign-pink-one.vercel.app/  
 **What:** Sign PDFs and images in your browser using webcam hand tracking. Your file stays on your device until you export.  
 **Stack:** Static site, client-side CV + PDF rendering.  
 **License:** (укажи как в репо — MIT и т.д.)
